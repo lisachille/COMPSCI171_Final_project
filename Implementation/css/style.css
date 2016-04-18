@@ -102,7 +102,8 @@ body {
 .hpic{
     position: absolute;
     left: 50%;
-    margin-left: -200px;
+    margin-top: 25px;
+    margin-left: -350px;
 }
 
 .background {
@@ -110,12 +111,12 @@ body {
     pointer-events: all;
 }
 
-.bednet{
+.factory{
     padding-top: 40px;
     padding-bottom: 20px;
 }
 
-.bednettext{
+.factorytext{
     text-align: center;
     margin-top: 300px;
 }
@@ -128,11 +129,11 @@ body {
     padding-top: 80px;
 }
 
-.woman {
+.green {
     padding-left: 80px;
 }
 
-#parasites{
+#blurb{
     padding-top: 85px;
 }
 
