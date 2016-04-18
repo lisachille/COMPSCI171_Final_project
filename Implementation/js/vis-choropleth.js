@@ -1,5 +1,6 @@
 // inspiration from http://www.cartographicperspectives.org/index.php/journal/article/view/cp78-sack-et-al/1359
 // http://bl.ocks.org/mbostock/2206340
+//https://s-media-cache-ak0.pinimg.com/736x/e2/fc/e5/e2fce5b2569ed0faa83d6577316ff2ec.jpg (world pic)
 
 // --> CREATE SVG DRAWING AREA
 var width = 960,
