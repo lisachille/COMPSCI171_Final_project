@@ -423,8 +423,8 @@ function clicked(d) {
         translate = projection.translate();
 
     projection.translate([
-        translate[0] - centroid[0] + width / 2,
-        translate[1] - centroid[1] + height / 2
+        translate[0] - centroid[0] + 960 / 2,
+        translate[1] - centroid[1] + 500 / 2
     ]);
 
     zoom.translate(projection.translate());
