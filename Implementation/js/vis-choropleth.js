@@ -1,24 +1,44 @@
 // inspiration from http://www.cartographicperspectives.org/index.php/journal/article/view/cp78-sack-et-al/1359
+// http://bl.ocks.org/mbostock/2206340
 
 // --> CREATE SVG DRAWING AREA
-var width = 1000,
-    height = 600;
+var width = 960,
+    height = 500;
 
 var svgmap = d3.select("#map-area").append("svg")
     .attr("width", width)
     .attr("height", height);
 
 // path and projection
-var projection = d3.geo.orthographic()
-    .translate([width / 2, height / 2])
-    .scale(450);
+var projection = d3.geo.equirectangular();
 var path = d3.geo.path()
     .projection(projection);
+// zoom
+var zoom = d3.behavior.zoom()
+    .translate(projection.translate())
+    .scale(projection.scale())
+    .scaleExtent([150, 8 * 500])
+    .on("zoom", zoomed);
+
+var g = svgmap.append("g")
+    .call(zoom);
+
+g.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    .style("stroke", "black")
+    .style("stroke-width", 1);
 
 // used to join datasets later
 var keyArray = ["At_risk", "At_high_risk", "Suspected_malaria_cases", "Malaria_cases", "UN_population"];
 // which key to show (initially 0)
 var shown = keyArray[0];
+// used to join datasets later
+var keyArrayC02 = ["2011"];
+var keyArrayGDP = ["2014"];
+var keyArrayEnergy = ["2013"];
+
 
 // scale for Malaria cases
 var MCscale = d3.scale.ordinal()
@@ -92,17 +112,18 @@ var tip = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
 });
 
 
-// Use the Queue.js library to read two files
+
+
+// Use the Queue.js library to read multiple files
 queue()
-  .defer(d3.json, "data/africa.topo.json")
+  .defer(d3.json, "data/world.geo.json")
   .defer(d3.csv, "data/global-malaria-2015.csv")
-  .await(function(error, mapTopJson, malariaDataCsv){
+    .defer(d3.csv, "data/CO2emissions.csv")
+    .defer(d3.csv, "data/GDP.csv")
+    .defer(d3.csv, "data/energyuse.csv")
+  .await(function(error, mapTopJson, malariaDataCsv, C02DataCsv, GDPDataCsv, energyDataCsv){
 
       // --> PROCESS DATA
-
-      // filter only Africa
-      malariaDataCsv = malariaDataCsv.filter(function(data) {return data.WHO_region == "African"});
-
       // convert to numbers
       malariaDataCsv.forEach(function(data){
           data.At_risk = +data.At_risk;
@@ -111,17 +132,48 @@ queue()
           data.Suspected_malaria_cases = +data.Suspected_malaria_cases;
           data.UN_population = +data.UN_population;
       });
-
-      console.log(malariaDataCsv);
+      C02DataCsv.forEach(function(data){
+          for(var j = 1960; j < 2016; j++){
+              var jnum = j.toString();
+              if(data[jnum] == "")
+              {
+                  data[jnum] = "N/A";
+              }
+              else{
+                  data[jnum] = +data[jnum];
+              }
+          }
+      });
+      GDPDataCsv.forEach(function(data){
+          for(var j = 1960; j < 2016; j++){
+              var jnum = j.toString();
+              if(data[jnum] == "")
+              {
+                  data[jnum] = "N/A";
+              }
+              else{
+                  data[jnum] = +data[jnum];
+              }
+          }
+      });
+      energyDataCsv.forEach(function(data){
+          for(var j = 1960; j < 2016; j++){
+              var jnum = j.toString();
+              if(data[jnum] == "")
+              {
+                  data[jnum] = "N/A";
+              }
+              else{
+                  data[jnum] = +data[jnum];
+              }
+          }
+      });
 
       // Convert TopoJSON to GeoJSON (target object = 'countries')
-      africa = topojson.feature(mapTopJson, mapTopJson.objects.collection).features;
-      console.log(africa);
+      world = mapTopJson.features;
 
       // vars to join datasets
-      var jsonCountries = mapTopJson.objects.collection.geometries;
-
-      console.log(jsonCountries);
+      var jsonCountries = world;
 
       // loop and join
       for (var i = 0; i < malariaDataCsv.length; i++){
@@ -141,7 +193,63 @@ queue()
           }
       }
 
-      // Creat Dropdown
+      // loop and join C02 data
+      for (var i = 0; i < C02DataCsv.length; i++){
+          // current code
+          var csvCountries = C02DataCsv[i];
+          var csvCode = csvCountries.Code;
+
+          for (var j = 0; j < jsonCountries.length; j++){
+              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
+                  for (var key in keyArrayC02){
+                      var attr = keyArrayC02[key];
+                      var val = parseFloat(csvCountries[attr]);
+                      jsonCountries[j].properties[attr] = val;
+                  }
+                  break;
+              }
+          }
+      }
+
+      // loop and join GDP data
+      for (var i = 0; i < GDPDataCsv.length; i++){
+          // current code
+          var csvCountries = GDPDataCsv[i];
+          var csvCode = csvCountries.Code;
+
+          for (var j = 0; j < jsonCountries.length; j++){
+              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
+                  for (var key in keyArrayGDP){
+                      var attr = keyArrayGDP[key];
+                      var val = parseFloat(csvCountries[attr]);
+                      jsonCountries[j].properties[attr] = val;
+                  }
+                  break;
+              }
+          }
+      }
+
+      // loop and join Energy data
+      for (var i = 0; i < energyDataCsv.length; i++){
+          // current code
+          var csvCountries = energyDataCsv[i];
+          var csvCode = csvCountries.Code;
+
+          for (var j = 0; j < jsonCountries.length; j++){
+              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
+                  for (var key in keyArrayEnergy){
+                      var attr = keyArrayEnergy[key];
+                      var val = parseFloat(csvCountries[attr]);
+                      jsonCountries[j].properties[attr] = val;
+                  }
+                  break;
+              }
+          }
+      }
+
+      // console.log(jsonCountries);
+
+      // Create Dropdown
       dropdown(malariaDataCsv);
 
       // Update choropleth
@@ -154,21 +262,29 @@ function updateChoropleth(malariaDataCsv) {
     // --> Choropleth implementation
     var recolorMap = colorscale(malariaDataCsv);
 
-    // Render the U.S. by using the path generator
-    svgmap.selectAll("path")
-        .data(africa)
+    // Render the World by using the path generator
+    g.append("g")
+        .selectAll("path")
+        .data(world)
         .enter().append("path")
         .attr("d", path)
         .attr("class", "countries")
         .style("fill", function(d) { return choropleth(d, recolorMap)})
         .style("stroke", "#ccc")
         .style("stroke-width", "1px")
-        .on('mouseover', tip.show).on('mouseout', tip.hide);
-    svgmap.call(tip);
+        .on('mouseover', tip.show).on('mouseout', tip.hide).on("click", clicked);
+    g.call(tip);
 
-    // Render Legend
+    // Render Legend, make it so that it has a white box over the map
     var svg = d3.select("svg");
-
+    svg
+        .append("rect")
+        .attr("width", 109)
+        .attr("height", 180)
+        .style("stroke", "black")
+        .style("fill", "white")
+        .style("stroke-width", 1)
+        .attr("transform", "translate(15,15)");
     svg
         .append("g")
         .attr("class", "legend")
@@ -292,5 +408,26 @@ function commaSeparateNumber(val){
         val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
     }
     return val;
+}
+
+function zoomed() {
+    projection.translate(d3.event.translate).scale(d3.event.scale);
+    g.selectAll("path").attr("d", path);
+}
+
+function clicked(d) {
+    var centroid = path.centroid(d),
+        translate = projection.translate();
+
+    projection.translate([
+        translate[0] - centroid[0] + 960 / 2,
+        translate[1] - centroid[1] + 500 / 2
+    ]);
+
+    zoom.translate(projection.translate());
+
+    g.selectAll("path").transition()
+        .duration(700)
+        .attr("d", path);
 }
 

@@ -56,13 +56,13 @@ body {
     width: 100%;
 }
 
-.mosquito {
+.titleworld {
     position: absolute;
-    top: 400px;
+    top: 450px;
     left: 50%;
-    max-width: 50%;
+    max-width: 100%;
     margin-top: -200px; /* Half the height */
-    margin-left: -150px; /* Half the width */
+    margin-left: -162.5px; /* Half the width */
 }
 
 .cite {
@@ -102,15 +102,21 @@ body {
 .hpic{
     position: absolute;
     left: 50%;
-    margin-left: -200px;
+    margin-top: 25px;
+    margin-left: -350px;
 }
 
-.bednet{
+.background {
+    fill: none;
+    pointer-events: all;
+}
+
+.factory{
     padding-top: 40px;
     padding-bottom: 20px;
 }
 
-.bednettext{
+.factorytext{
     text-align: center;
     margin-top: 300px;
 }
@@ -123,11 +129,11 @@ body {
     padding-top: 80px;
 }
 
-.woman {
+.green {
     padding-left: 80px;
 }
 
-#parasites{
+#blurb{
     padding-top: 85px;
 }
 
