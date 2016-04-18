@@ -114,7 +114,7 @@ var tip = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
 
 
 
-// Use the Queue.js library to read two files
+// Use the Queue.js library to read multiple files
 queue()
   .defer(d3.json, "data/world.geo.json")
   .defer(d3.csv, "data/global-malaria-2015.csv")
@@ -168,8 +168,6 @@ queue()
               }
           }
       });
-
-      console.log(energyDataCsv);
 
       // Convert TopoJSON to GeoJSON (target object = 'countries')
       world = mapTopJson.features;
@@ -249,7 +247,7 @@ queue()
           }
       }
 
-      console.log(jsonCountries);
+      // console.log(jsonCountries);
 
       // Create Dropdown
       dropdown(malariaDataCsv);
