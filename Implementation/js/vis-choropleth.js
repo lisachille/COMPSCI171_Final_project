@@ -34,6 +34,11 @@ g.append("rect")
 var keyArray = ["At_risk", "At_high_risk", "Suspected_malaria_cases", "Malaria_cases", "UN_population"];
 // which key to show (initially 0)
 var shown = keyArray[0];
+// used to join datasets later
+var keyArrayC02 = ["2011"];
+var keyArrayGDP = ["2014"];
+var keyArrayEnergy = ["2013"];
+
 
 // scale for Malaria cases
 var MCscale = d3.scale.ordinal()
@@ -114,11 +119,11 @@ queue()
   .defer(d3.json, "data/world.geo.json")
   .defer(d3.csv, "data/global-malaria-2015.csv")
     .defer(d3.csv, "data/CO2emissions.csv")
-  .await(function(error, mapTopJson, malariaDataCsv, C02DataCsv){
+    .defer(d3.csv, "data/GDP.csv")
+    .defer(d3.csv, "data/energyuse.csv")
+  .await(function(error, mapTopJson, malariaDataCsv, C02DataCsv, GDPDataCsv, energyDataCsv){
 
       // --> PROCESS DATA
-
-
       // convert to numbers
       malariaDataCsv.forEach(function(data){
           data.At_risk = +data.At_risk;
@@ -127,7 +132,6 @@ queue()
           data.Suspected_malaria_cases = +data.Suspected_malaria_cases;
           data.UN_population = +data.UN_population;
       });
-      // convert to numbers
       C02DataCsv.forEach(function(data){
           for(var j = 1960; j < 2016; j++){
               var jnum = j.toString();
@@ -139,9 +143,33 @@ queue()
                   data[jnum] = +data[jnum];
               }
           }
-          data.UN_population = +data.UN_population;
       });
-      console.log(C02DataCsv);
+      GDPDataCsv.forEach(function(data){
+          for(var j = 1960; j < 2016; j++){
+              var jnum = j.toString();
+              if(data[jnum] == "")
+              {
+                  data[jnum] = "N/A";
+              }
+              else{
+                  data[jnum] = +data[jnum];
+              }
+          }
+      });
+      energyDataCsv.forEach(function(data){
+          for(var j = 1960; j < 2016; j++){
+              var jnum = j.toString();
+              if(data[jnum] == "")
+              {
+                  data[jnum] = "N/A";
+              }
+              else{
+                  data[jnum] = +data[jnum];
+              }
+          }
+      });
+
+      console.log(energyDataCsv);
 
       // Convert TopoJSON to GeoJSON (target object = 'countries')
       world = mapTopJson.features;
@@ -166,25 +194,62 @@ queue()
               }
           }
       }
-      //console.log(jsonCountries);
-      //// loop and join
-      //for (var i = 0; i < C02DataCsv.length; i++){
-      //    // current code
-      //    var csvCountries = C02DataCsv[i];
-      //    var csvCode = csvCountries.Code;
-      //
-      //    for (var j = 0; j < jsonCountries.length; j++){
-      //        if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-      //            for (var key in keyArray){
-      //                var attr = keyArray[key];
-      //                var val = parseFloat(csvCountries[attr]);
-      //                jsonCountries[j].properties[attr] = val;
-      //            }
-      //            break;
-      //        }
-      //    }
-      //}
 
+      // loop and join C02 data
+      for (var i = 0; i < C02DataCsv.length; i++){
+          // current code
+          var csvCountries = C02DataCsv[i];
+          var csvCode = csvCountries.Code;
+
+          for (var j = 0; j < jsonCountries.length; j++){
+              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
+                  for (var key in keyArrayC02){
+                      var attr = keyArrayC02[key];
+                      var val = parseFloat(csvCountries[attr]);
+                      jsonCountries[j].properties[attr] = val;
+                  }
+                  break;
+              }
+          }
+      }
+
+      // loop and join GDP data
+      for (var i = 0; i < GDPDataCsv.length; i++){
+          // current code
+          var csvCountries = GDPDataCsv[i];
+          var csvCode = csvCountries.Code;
+
+          for (var j = 0; j < jsonCountries.length; j++){
+              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
+                  for (var key in keyArrayGDP){
+                      var attr = keyArrayGDP[key];
+                      var val = parseFloat(csvCountries[attr]);
+                      jsonCountries[j].properties[attr] = val;
+                  }
+                  break;
+              }
+          }
+      }
+
+      // loop and join Energy data
+      for (var i = 0; i < energyDataCsv.length; i++){
+          // current code
+          var csvCountries = energyDataCsv[i];
+          var csvCode = csvCountries.Code;
+
+          for (var j = 0; j < jsonCountries.length; j++){
+              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
+                  for (var key in keyArrayEnergy){
+                      var attr = keyArrayEnergy[key];
+                      var val = parseFloat(csvCountries[attr]);
+                      jsonCountries[j].properties[attr] = val;
+                  }
+                  break;
+              }
+          }
+      }
+
+      console.log(jsonCountries);
 
       // Create Dropdown
       dropdown(malariaDataCsv);
