@@ -58,11 +58,11 @@ body {
 
 .titleworld {
     position: absolute;
-    top: 200px;
+    top: 450px;
     left: 50%;
     max-width: 100%;
     margin-top: -200px; /* Half the height */
-    margin-left: -325px; /* Half the width */
+    margin-left: -162.5px; /* Half the width */
 }
 
 .cite {
