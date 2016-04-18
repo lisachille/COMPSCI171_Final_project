@@ -149,3 +149,28 @@ body {
     font-family: OldLondon;
     src: url(/fonts/OldLondon.ttf) format('embedded-opentype');
 }
+
+
+
+.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: brown;
+}
+
+.axis {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path {
+    display: none;
+}
