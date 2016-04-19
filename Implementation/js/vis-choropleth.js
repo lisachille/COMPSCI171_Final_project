@@ -31,7 +31,7 @@ g.append("rect")
     .style("stroke-width", 1);
 
 // used to join datasets later
-var keyArray = ["At_risk", "At_high_risk", "Suspected_malaria_cases", "Malaria_cases", "UN_population"];
+var keyArray = ["2011", "2014", "2013"];
 // which key to show (initially 0)
 var shown = keyArray[0];
 // used to join datasets later
@@ -40,19 +40,19 @@ var keyArrayGDP = ["2014"];
 var keyArrayEnergy = ["2013"];
 
 
-// scale for Malaria cases
-var MCscale = d3.scale.ordinal()
-    .domain(["Data N/A", "0 - 2.2M", "2.2M - 4.4M", "4.4M - 6.6M", "6.6M - 8.8M", "11.1M - 13.3M", "13.3M - 15.6M", "15.5M - 17.8M", "17.8M - 20M", "20M +"])
-    .range([ "#000000", "#fff5eb", "#fee6ce", "#fdd0a2", "#fdae6b", "#fd8d3c", "#f16913", "#d94801", "#a63603", "#7f2704" ]);
-// Scale for Population
-var Pscale = d3.scale.ordinal()
-    .domain(["Data N/A", "0 - 6.6M", "6.6M - 13.1M", "13.1M - 19.7M", "19.7M - 26.3M", "26.3M - 32.9M", "32.9M - 46.0M", "46.0M - 52.6M", "52.6M - 59.2M", "59.2M +"])
+// scale for GDP
+var GDPscale = d3.scale.ordinal()
+    .domain(["Data N/A", "0 - 125M", "125M - 250M", "250M - 375M", "375M - 500M", "500M - 625M", "625M - 750M", "750M - 875M", "875M - 1B", "1B +"])
     .range([ "#000000", "#f7fcf5", "#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#006d2c", "#00441b" ]);
-// Scale for At Risk
-var ARscale = d3.scale.ordinal()
-    .domain(["Data N/A", "0% - 11%", "11% - 22%", "22% - 33%", "33% - 44%", "44% - 56%", "56% - 67%", "67% - 78%", "78% - 89%", "89% - 100%"])
+// Scale for Electricity
+var Escale = d3.scale.ordinal()
+    .domain(["Data N/A", "0 - 1,250", "1,250- 2,500", "2,500 - 3,750", "3,750 - 5,000", "5,000 - 6,250", "6,250 - 7,500", "7,500 - 8,750", "8,750 - 10,000", "10,000 +"])
+    .range([ "#000000", "#fff5eb", "#fee6ce", "#fdd0a2", "#fdae6b", "#fd8d3c", "#f16913", "#d94801", "#a63603", "#7f2704" ]);
+// Scale for C02
+var C02scale = d3.scale.ordinal()
+    .domain(["Data N/A", "0 - 3.125", "3.125 - 6.25", "6.25 - 9.375", "9.375 - 12.5", "12.5 - 15.625", "15.625 - 18.75", "18.75 - 21.875", "21.875 - 25", "25 +"])
     .range([ "#000000", "#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d" ]);
-var CurrentScale = ARscale;
+var CurrentScale = C02scale;
 
 // tooltip
 var tip = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
@@ -60,51 +60,31 @@ var tip = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
     var percent = "";
     var val;
     // cases
-    if (shown == "At_risk"){
-        type = "At Risk";
+    if (shown == "2011"){
+        type = "CO2 Emissions";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
         }
         else{
-            percent = "%";
-            val = d.properties[shown];
+            val = d.properties[shown].toFixed(2);
         }
     }
-    else if (shown == "At_high_risk"){
-        type = "At High Risk";
+    else if (shown == "2013"){
+        type = "Electric Power Consumption)";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
         }
         else{
-            percent = "%";
-            val = d.properties[shown];
+            val = commaSeparateNumber(d.properties[shown].toFixed(0));
         }
     }
-    else if (shown == "Suspected_malaria_cases"){
-        type = "Suspected Malaria Cases";
+    else if (shown == "2014"){
+        type = "GDP";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
         }
         else{
-            val = commaSeparateNumber(d.properties[shown]);
-        }
-    }
-    else if (shown == "Malaria_cases"){
-        type = "Malaria Cases";
-        if(d.properties[shown] == null || isNaN(d.properties[shown])) {
-            val = "Data N/A";
-        }
-        else{
-            val = commaSeparateNumber(d.properties[shown]);
-        }
-    }
-    else {
-        type = "Population";
-        if(d.properties[shown] == null || isNaN(d.properties[shown])) {
-            val = "Data N/A";
-        }
-        else{
-            val = commaSeparateNumber(d.properties[shown]);
+            val = "$" + commaSeparateNumber(d.properties[shown].toFixed(0));
         }
     }
     return "<strong>" + d.properties.name +
@@ -112,26 +92,15 @@ var tip = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
 });
 
 
-
-
 // Use the Queue.js library to read multiple files
 queue()
   .defer(d3.json, "data/world.geo.json")
-  .defer(d3.csv, "data/global-malaria-2015.csv")
     .defer(d3.csv, "data/CO2emissions.csv")
     .defer(d3.csv, "data/GDP.csv")
     .defer(d3.csv, "data/energyuse.csv")
-  .await(function(error, mapTopJson, malariaDataCsv, C02DataCsv, GDPDataCsv, energyDataCsv){
+  .await(function(error, mapTopJson, C02DataCsv, GDPDataCsv, energyDataCsv){
 
       // --> PROCESS DATA
-      // convert to numbers
-      malariaDataCsv.forEach(function(data){
-          data.At_risk = +data.At_risk;
-          data.At_high_risk = +data.At_high_risk;
-          data.Malaria_cases = +data.Malaria_cases;
-          data.Suspected_malaria_cases = +data.Suspected_malaria_cases;
-          data.UN_population = +data.UN_population;
-      });
       C02DataCsv.forEach(function(data){
           for(var j = 1960; j < 2016; j++){
               var jnum = j.toString();
@@ -169,29 +138,11 @@ queue()
           }
       });
 
-      // Convert TopoJSON to GeoJSON (target object = 'countries')
+      // world global variable
       world = mapTopJson.features;
 
       // vars to join datasets
       var jsonCountries = world;
-
-      // loop and join
-      for (var i = 0; i < malariaDataCsv.length; i++){
-          // current code
-          var csvCountries = malariaDataCsv[i];
-          var csvCode = csvCountries.Code;
-
-          for (var j = 0; j < jsonCountries.length; j++){
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArray){
-                      var attr = keyArray[key];
-                      var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr] = val;
-                  }
-                  break;
-              }
-          }
-      }
 
       // loop and join C02 data
       for (var i = 0; i < C02DataCsv.length; i++){
@@ -230,14 +181,14 @@ queue()
       }
 
       // loop and join Energy data
-      for (var i = 0; i < energyDataCsv.length; i++){
+      for (var i = 0; i < energyDataCsv.length; i++) {
           // current code
           var csvCountries = energyDataCsv[i];
           var csvCode = csvCountries.Code;
 
-          for (var j = 0; j < jsonCountries.length; j++){
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayEnergy){
+          for (var j = 0; j < jsonCountries.length; j++) {
+              if (jsonCountries[j].properties.adm0_a3_is == csvCode) {
+                  for (var key in keyArrayEnergy) {
                       var attr = keyArrayEnergy[key];
                       var val = parseFloat(csvCountries[attr]);
                       jsonCountries[j].properties[attr] = val;
@@ -247,20 +198,18 @@ queue()
           }
       }
 
-      // console.log(jsonCountries);
-
       // Create Dropdown
-      dropdown(malariaDataCsv);
+      dropdown(jsonCountries);
 
       // Update choropleth
-      updateChoropleth(malariaDataCsv);
+      updateChoropleth(jsonCountries);
   });
     
 
-function updateChoropleth(malariaDataCsv) {
+function updateChoropleth(jsonCountries) {
 
     // --> Choropleth implementation
-    var recolorMap = colorscale(malariaDataCsv);
+    var recolorMap = colorscale(jsonCountries);
 
     // Render the World by using the path generator
     g.append("g")
@@ -298,22 +247,22 @@ function updateChoropleth(malariaDataCsv) {
 }
 
 
-function colorscale(malariaDataCsv) {
+function colorscale(jsonCountries) {
 
-    if (shown == "At_risk" || shown == "At_high_risk"){
+    if (shown == "2011"){
         var color = d3.scale.quantize()
-            .domain([0,100])
+            .domain([0, 25])
             .range(colorbrewer.Reds[9]);
     }
-    else if (shown == "Suspected_malaria_cases" || shown == "Malaria_cases"){
+    else if (shown == "2014"){
         var color = d3.scale.quantize()
-            .domain([0, 20000000])
-            .range(colorbrewer.Oranges[9]);
+            .domain([0, 1000000000000])
+            .range(colorbrewer.Greens[9]);
     }
     else{
         var color = d3.scale.quantize()
-            .domain([0, d3.max( malariaDataCsv, function( d ) { return d.UN_population; } ) / 3] )
-            .range(colorbrewer.Greens[9]);
+            .domain([0, 10000])
+            .range(colorbrewer.Oranges[9]);
     }
 
     return color;
@@ -330,23 +279,23 @@ function choropleth(d, recolorMap) {
     }
 }
 
-function dropdown(malariaDataCsv) {
+function dropdown(jsonCountries) {
     // add elements
     var dropdown = d3.select("#select")
         .append("div")
-        .html("<h3>Select Data </h3>")
+        .html("<h3>Select Data (Most Recent)</h3>")
         .append("select")
         .attr("class", "form-control")
         .on("change", function() {
             shown = this.value;
-            if (shown == "At_risk" || shown == "At_high_risk"){
-                CurrentScale = ARscale;
+            if (shown == "2011"){
+                CurrentScale = C02scale;
             }
-            else if (shown == "Suspected_malaria_cases" || shown == "Malaria_cases"){
-                CurrentScale = MCscale;
+            else if (shown == "2014"){
+                CurrentScale = GDPscale;
             }
             else{
-                CurrentScale = Pscale;
+                CurrentScale = Escale;
             }
 
             // Change Legend
@@ -361,7 +310,7 @@ function dropdown(malariaDataCsv) {
 
             svg.select(".legend")
                 .call(legend);
-            changeAttribute(malariaDataCsv);
+            changeAttribute(jsonCountries);
         });
 
     // elements
@@ -372,32 +321,26 @@ function dropdown(malariaDataCsv) {
         .attr("class", "selection")
         .attr("value", function(d) {return d})
         .text(function(d) {
-            if ( d == "At_risk"){
-                return "At Risk";
+            if ( d == "2011"){
+                return "2011 CO2 Emissions (metric ton per capita)";
             }
-            if ( d == "At_high_risk"){
-                return "At High Risk";
+            if ( d == "2014"){
+                return "2014 GDP (Current US$)";
             }
-            if ( d == "Suspected_malaria_cases"){
-                return "Suspected Malaria Cases";
-            }
-            if ( d == "Malaria_cases"){
-                return "Malaria Cases";
-            }
-            if ( d == "UN_population"){
-                return "Population";
+            if ( d == "2013"){
+                return "2013 Electric Power Consumption (kWh per capita)";
             }
         });
 }
 
-function changeAttribute(malariaDataCsv) {
+function changeAttribute(jsonCountries) {
 
     // recolor map
     d3.selectAll(".countries")
         .transition()
         .duration(1000)
         .style("fill", function(d) {
-            return choropleth(d, colorscale(malariaDataCsv));
+            return choropleth(d, colorscale(jsonCountries));
         });
 
 }
