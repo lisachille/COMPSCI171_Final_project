@@ -55,7 +55,7 @@ var C02scale = d3.scale.ordinal()
 var CurrentScale = C02scale;
 
 // tooltip
-var tip = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
+var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
     var type;
     var percent = "";
     var val;
@@ -221,8 +221,8 @@ function updateChoropleth(jsonCountries) {
         .style("fill", function(d) { return choropleth(d, recolorMap)})
         .style("stroke", "#ccc")
         .style("stroke-width", "1px")
-        .on('mouseover', tip.show).on('mouseout', tip.hide).on("click", clicked);
-    g.call(tip);
+        .on('mouseover', tipmap.show).on('mouseout', tipmap.hide).on("click", clicked);
+    g.call(tipmap);
 
     // Render Legend, make it so that it has a white box over the map
     var svg = d3.select("svg");

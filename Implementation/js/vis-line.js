@@ -164,11 +164,11 @@ queue()
                 }
                 return d[1990];
             });
-            
+
         circles
             .attr("r", 10)
             .style("fill", "red");
-        
+
         circles
             .exit().remove();
 */
