@@ -75,13 +75,21 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" >
         <h1>Charts, Steamgraph, Bubble Chart</h1>
         <div>
             <strong> Small Blurb. </strong>
         </div>
 
         <div class="col-md-8" id = "bar">
+            <div class="drowndown-group">
+                <select class="form-control" name="type" id= "selecttype" onchange= "changeVisualization()">
+                    <option selected value="energy">Energy Consumption</option>
+                    <option selected value="C02">C02 Emissions</option>
+
+                </select>
+
+            </div>
         </div>
 
         <div class="col-md-8" id = "bubble-area">
