@@ -1,10 +1,9 @@
 var margin = {top: 50, right: 300, bottom: 50, left: 50},
-
     width = 1000 - margin.right - margin.left,
     height = 500 - margin.top - margin.bottom,
     padding = 10;
 
-var svg = d3.select("#bubble-area").append("svg")
+var svg = d3.select("#line-area").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -24,6 +23,9 @@ var x = d3.scale.linear()
 var y = d3.scale.linear()
     .range([height, 0])
     .domain([0,100]);
+/*var yToggle = d3.scale.linear()
+    .range([height, 0])
+    .domain([0,100]);*/
 
 // Create axes
 var xAxis = d3.svg.axis()
@@ -32,6 +34,9 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
+/*var yAxisToggle = d3.svg.axis()
+    .scale(y)
+    .orient("right");*/
 
 // Label the x-axis
 svg.append("text")

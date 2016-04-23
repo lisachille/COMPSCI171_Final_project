@@ -1,21 +1,14 @@
 // SVG drawing area
-
 var margin = {top: 40, right: 40, bottom: 60, left: 60};
 
 var width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom,
     padding = 20;
 
-// Drop down id
-var selectedValue;
-
 // Declare tool-tip
 var tip = d3.tip()
     .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function(d) {
-        return d.EDITION + "<br/>" + d[selectedValue];
-    });
+    .offset([-10, 0]);
 
 // Declare svg
 var svg = d3.select("#line-area").append("svg")
@@ -45,23 +38,25 @@ var yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left");
 
-// Label the x-axis
+// Label the axes: x-axis
 svg.append("text")
     .attr("transform","translate(" + (width - padding) + "," + (height + margin.bottom - padding) + ")")
     .text("Year");
+// y-axis
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("class", "y-axis-label")
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("CO2 emissions");
 
 // Declare axes groups
 var xAxisGroup = svg.append("g")
     .attr("class", "x-axis axis")
-    .attr("transform", "translate(0," + height+ ")");
+    .attr("transform", "translate(0," + height + ")");
 var yAxisGroup = svg.append("g")
     .attr("class", "y-axis axis");
-
-// Define line function
-var line = d3.svg.line()
-    .x(function(d) { return xScale(d.YEAR); })
-    .y(function(d) { return yScale(d[selectedValue]); })
-    .interpolate("linear");
 
 // Declare line group
 var lineGroup = svg.append("g")
@@ -81,6 +76,9 @@ loadData();
 function loadData() {
     d3.json("data/CO2emissions2.json", function(error, json) {
 
+        // Error checking
+        if (error) throw error;
+
         json.forEach(function(d){
             // Convert string to 'date object'
             d.year = formatDate.parse(d.year);
@@ -94,98 +92,72 @@ function loadData() {
         // Store json data in global variable
         DATA = json;
 
-        var filteredData;
+        var filteredData = [];
+
         // Filter data of the relevant country
-        filteredData = DATA.forEach(function(d){
-            d.values.filter(function (e){
-                return (e.country == "Albania")
-            });
+        DATA.forEach(function(d){
+            filteredData.push({year: d.year, emission: d.values[4].emission})
         });
+        console.log(DATA);
         console.log(filteredData);
-    });
-}
 
-/*
-// Render visualization
-function updateVisualization() {
+        // Update the domain for the scales
+        xScale.domain(d3.extent(filteredData,function(d){
+            return d.year;
+        }));
+        yScale.domain(d3.extent(filteredData,function(d){
+            return d.emission;
+        }));
 
-    var filteredData;
-    // Filter data within the range
-    filteredData = DATA.filter(function(d){
-        for (var i = 0; i < 248; i++){
-            return (d.values[i].country == "Albania");
-        }
-    });
-    console.log(filteredData);
+        // Define line function
+        var line = d3.svg.line()
+            .x(function(d) { return xScale(d.year); })
+            .y(function(d) { return yScale(d.emission); })
+            .interpolate("linear");
 
-    // Call the tool-tip
-    svg.call(tip);
+        // Append path to line group
+        lineGroup.transition().duration(800)
+            .attr("d", line(filteredData))
+        ;
 
-    // Update the domain for the scales
-    xScale.domain(d3.extent(filteredData,function(d){
-        return d.YEAR;
-    }));
-    yScale.domain(d3.extent(filteredData,function(d){
-        return d[selectedValue];
-    }));
-
-    // Append path to line group
-    lineGroup.transition().duration(800)
-        .attr("d", line(filteredData));
-
-    // Data-bind
-    var circle = svg.selectAll("circle")
-        .data(filteredData);
-
-    // Enter/Append circles
-    circle.enter()
-        .append("circle")
-        .attr("class", "circles")
-        .attr("r", 4);
-
-    // Update
-    circle
-        .transition().duration(800)
-        .attr("cx", function(d){
-            return xScale(d.YEAR);
-        })
-        .attr("cy", function(d){
-            return yScale(d[selectedValue]);
+        tip.html(function(d){
+            return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " + d.emission.toFixed(2) + "t/capita";
         });
 
-    // Call on events
-    circle
-        .on("mouseover", tip.show)
-        .on("mouseout", tip.hide)
-        .on("click", showEdition);
+        // Call the tool-tip
+        svg.call(tip);
 
-    // Call the relevant axes
-    xAxisGroup.transition().duration(800).call(xAxis);
-    yAxisGroup.transition().duration(800).call(yAxis);
+        // Data-bind
+        var circle = svg.selectAll("circle")
+            .data(filteredData);
 
-    // Append a y-axis label
-    axisLabel.text(function() {
-        switch (selectedValue) {
-            case "GOALS":
-                return "Goals";
-                break;
-            case "AVERAGE_GOALS":
-                return "Average goals";
-                break;
-            case "MATCHES":
-                return "Matches";
-                break;
-            case "TEAMS":
-                return "Teams";
-                break;
-            case "AVERAGE_ATTENDANCE":
-                return "Average attendance";
-                break;
-        }
+        // Enter/Append circles
+        circle.enter()
+            .append("circle")
+            .attr("class", "circles")
+            .attr("r", 4);
+
+        // Update
+        circle
+            .transition().duration(800)
+            .attr("cx", function(d){
+                return xScale(d.year);
+            })
+            .attr("cy", function(d){
+                return yScale(d.emission);
+            });
+
+        // Call on events
+        circle
+            .on("mouseover", tip.show)
+            .on("mouseout", tip.hide);
+
+        // Call the relevant axes
+        xAxisGroup.transition().duration(800).call(xAxis);
+        yAxisGroup.transition().duration(800).call(yAxis);
+
+        // Remove irrelevant selection
+        circle.exit()
+            .remove();
     });
-
-    // Remove irrelevant selection
-    circle.exit()
-        .remove();
 }
-*/
