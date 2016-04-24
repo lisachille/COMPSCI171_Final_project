@@ -83,7 +83,7 @@ function changeVisualization() {
 
     if (selected == "energy"){
         data = energy;
-        console.log(data);
+        //console.log(data);
         //changeVisualization(data);
     }
     else {

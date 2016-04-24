@@ -272,7 +272,7 @@ queue()
       // Update choropleth
       updateChoropleth();
   });
-    
+
 
 function updateChoropleth() {
 
