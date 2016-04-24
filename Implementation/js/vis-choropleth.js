@@ -43,15 +43,15 @@ var keyArrayEnergy = ["2013"];
 // scale for GDP
 var GDPscale = d3.scale.ordinal()
     .domain(["Data N/A", "0 - 125M", "125M - 250M", "250M - 375M", "375M - 500M", "500M - 625M", "625M - 750M", "750M - 875M", "875M - 1B", "1B +"])
-    .range([ "#000000", "#f7fcf5", "#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#006d2c", "#00441b" ]);
+    .range([ "#ccc", "#f7fcf5", "#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#41ab5d", "#238b45", "#006d2c", "#00441b" ]);
 // Scale for Electricity
 var Escale = d3.scale.ordinal()
     .domain(["Data N/A", "0 - 1,250", "1,250- 2,500", "2,500 - 3,750", "3,750 - 5,000", "5,000 - 6,250", "6,250 - 7,500", "7,500 - 8,750", "8,750 - 10,000", "10,000 +"])
-    .range([ "#000000", "#fff5eb", "#fee6ce", "#fdd0a2", "#fdae6b", "#fd8d3c", "#f16913", "#d94801", "#a63603", "#7f2704" ]);
+    .range([ "#ccc", "#fff5eb", "#fee6ce", "#fdd0a2", "#fdae6b", "#fd8d3c", "#f16913", "#d94801", "#a63603", "#7f2704" ]);
 // Scale for C02
 var C02scale = d3.scale.ordinal()
     .domain(["Data N/A", "0 - 3.125", "3.125 - 6.25", "6.25 - 9.375", "9.375 - 12.5", "12.5 - 15.625", "15.625 - 18.75", "18.75 - 21.875", "21.875 - 25", "25 +"])
-    .range([ "#000000", "#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d" ]);
+    .range([ "#ccc", "#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d" ]);
 var CurrentScale = C02scale;
 
 // tooltip
@@ -219,8 +219,8 @@ function updateChoropleth(jsonCountries) {
         .attr("d", path)
         .attr("class", "countries")
         .style("fill", function(d) { return choropleth(d, recolorMap)})
-        .style("stroke", "#ccc")
-        .style("stroke-width", "1px")
+        .style("stroke", "#000")
+        .style("stroke-width", ".5px")
         .on('mouseover', tipmap.show).on('mouseout', tipmap.hide).on("click", clicked);
     g.call(tipmap);
 
@@ -275,7 +275,7 @@ function choropleth(d, recolorMap) {
         return recolorMap(value);
     }
     else {
-        return "#000000";
+        return "#ccc";
     }
 }
 
