@@ -81,7 +81,7 @@
             <strong> Small Blurb. </strong>
         </div>
 
-        <div class="col-md-8" id = "bar">
+        <div class="col-md-12" id = "bar">
             <div class="drowndown-group">
                 <select class="form-control" name="type" id= "selecttype" onchange= "changeVisualization()">
                     <option selected value="energy">Energy Consumption</option>
@@ -90,6 +90,7 @@
                 </select>
 
             </div>
+            <div id="barChart"></div>
         </div>
 
         <div class="col-md-8" id = "line-area">
@@ -130,9 +131,10 @@
 
 
 	<!-- Choropleth and second visualization -->
-	<!--<script src="js/vis-choropleth.js"></script>
-	<script src="js/vis-second.js"></script>-->
+	<!--<script src="js/vis-choropleth.js"></script>-->
+	<script src="js/vis-second.js"></script>
     <script src="js/vis-lineexp.js"></script>
+<script src="js/barchart.js"></script>
 
 </body>
 </html>
