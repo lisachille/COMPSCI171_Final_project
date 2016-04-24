@@ -6,7 +6,7 @@
 var formatter = d3.format(".0f");
 var tickFormatter = function(d) {
     return formatter(d);
-}
+};
 var slider = d3.slider().min(1960).max(2015).ticks(10).showRange(true).value(2015).tickFormat(tickFormatter);
 // Render the slider in the div
 d3.select('#slider').call(slider);
@@ -399,7 +399,15 @@ function clicked(d) {
     g.selectAll("path").transition()
         .duration(700)
         .attr("d", path);
-    console.log(title);
-    title = "hi";
+
+    // name of clicked country
+    name = d.properties.name;
+    title = name + " Energy Breakdown";
+
+    // update pie
+    pie.destroy();
+    createpie();
 }
+
+
 
