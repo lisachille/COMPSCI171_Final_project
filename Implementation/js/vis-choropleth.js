@@ -1,6 +1,16 @@
 // inspiration from http://www.cartographicperspectives.org/index.php/journal/article/view/cp78-sack-et-al/1359
 // http://bl.ocks.org/mbostock/2206340
 
+// make slider (http://sujeetsr.github.io/d3.slider/)
+// tick formatter
+var formatter = d3.format(".0f");
+var tickFormatter = function(d) {
+    return formatter(d);
+}
+var slider = d3.slider().min(1960).max(2015).ticks(10).showRange(true).value(2015).tickFormat(tickFormatter);
+// Render the slider in the div
+d3.select('#slider').call(slider);
+
 // --> CREATE SVG DRAWING AREA
 var width = 960,
     height = 500;
@@ -41,7 +51,6 @@ var keyArrayYears = [];
 for (var l = 1960; l <= 2014; l++) {
     keyArrayYears.push(l);
 }
-
 
 // scale for GDP
 var GDPscale = d3.scale.ordinal()
@@ -301,7 +310,7 @@ function dropdown(jsonCountries) {
     // add elements
     var dropdown = d3.select("#select")
         .append("div")
-        .html("<h3>Select Data (Most Recent)</h3>")
+        .html("<h3>Select Data</h3>")
         .append("select")
         .attr("class", "form-control")
         .on("change", function() {
@@ -340,13 +349,13 @@ function dropdown(jsonCountries) {
         .attr("value", function(d) {return d})
         .text(function(d) {
             if ( d == "2011c02"){
-                return "2011 CO2 Emissions (metric ton per capita)";
+                return "CO2 Emissions (metric ton per capita)";
             }
             if ( d == "2014gdp"){
-                return "2014 GDP (Current US$)";
+                return "GDP (Current US$)";
             }
             if ( d == "2013energy"){
-                return "2013 Electric Power Consumption (kWh per capita)";
+                return "Electric Power Consumption (kWh per capita)";
             }
         });
 }
