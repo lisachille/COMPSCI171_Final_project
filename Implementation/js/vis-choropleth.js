@@ -399,5 +399,7 @@ function clicked(d) {
     g.selectAll("path").transition()
         .duration(700)
         .attr("d", path);
+    console.log(title);
+    title = "hi";
 }
 
