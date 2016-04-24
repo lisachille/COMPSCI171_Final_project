@@ -1,12 +1,13 @@
 
 // initial title, create for first time
 title = "Energy Breakdown";
+year = 2014;
 createpie();
 function createpie(){
     pie = new d3pie("pieChart", {
         "header": {
             "title": {
-                "text": title,
+                "text": title + " " + year,
                 "fontSize": 24,
                 "font": "open sans"
             },
@@ -25,21 +26,26 @@ function createpie(){
             "location": "bottom-left"
         },
         "size": {
-            "canvasWidth": 590,
-            "pieOuterRadius": "90%"
+            "canvasWidth": 690,
+            "pieOuterRadius": "86%"
         },
         "data": {
             "sortOrder": "value-desc",
             "content": [
                 {
-                    "label": "Carbon",
-                    "value": 56,
-                    "color": "#2484c1"
+                    "label": "Alternative/Nuclear energy",
+                    "value": 40,
+                    "color": "#5c97d4"
                 },
                 {
-                    "label": "Other",
-                    "value": 44,
-                    "color": "#0c6197"
+                    "label": "Fossil Fuels",
+                    "value": 56,
+                    "color": "#a05c56"
+                },
+                {
+                    "label": "Biomass",
+                    "value": 4,
+                    "color": "#95cd5a"
                 }
             ]
         },
@@ -71,7 +77,7 @@ function createpie(){
         "effects": {
             "pullOutSegmentOnClick": {
                 "effect": "linear",
-                "speed": 400,
+                "speed": 300,
                 "size": 8
             }
         },

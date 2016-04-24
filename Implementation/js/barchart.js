@@ -45,13 +45,13 @@ var BarChart = function(_parentElement, _data) {
 BarChart.prototype.wrangleData = function(d) {
     var vis = this;
     vis.data = d;
-    console.log(d,vis.data);
+    //console.log(d,vis.data);
     vis.UpdateVis();
 };
 
 BarChart.prototype.UpdateVis = function() {
     var vis = this;
-    console.log(vis.data);
+    //console.log(vis.data);
 
 
     this.x.domain(vis.data.map(function (d) {

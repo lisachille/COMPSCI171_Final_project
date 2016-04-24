@@ -88,7 +88,7 @@ function changeVisualization() {
     }
     else {
         data = C02;
-        console.log(data);
+        //console.log(data);
         //changeVisualization(data);
     }
     //console.log(d);
