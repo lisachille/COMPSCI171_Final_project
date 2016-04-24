@@ -31,13 +31,16 @@ g.append("rect")
     .style("stroke-width", 1);
 
 // used to join datasets later
-var keyArray = ["2011", "2014", "2013"];
+var keyArray = ["2011c02", "2014gdp", "2013energy"];
 // which key to show (initially 0)
 var shown = keyArray[0];
 // used to join datasets later
-var keyArrayC02 = ["2011"];
-var keyArrayGDP = ["2014"];
-var keyArrayEnergy = ["2013"];
+
+var keyArrayYears = [];
+// populate array with years
+for (var l = 1960; l <= 2014; l++) {
+    keyArrayYears.push(l);
+}
 
 
 // scale for GDP
@@ -60,7 +63,7 @@ var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
     var percent = "";
     var val;
     // cases
-    if (shown == "2011"){
+    if (shown == "2011c02"){
         type = "CO2 Emissions";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
@@ -69,7 +72,7 @@ var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
             val = d.properties[shown].toFixed(2);
         }
     }
-    else if (shown == "2013"){
+    else if (shown == "2013energy"){
         type = "Electric Power Consumption)";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
@@ -78,7 +81,7 @@ var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
             val = commaSeparateNumber(d.properties[shown].toFixed(0));
         }
     }
-    else if (shown == "2014"){
+    else if (shown == "2014gdp"){
         type = "GDP";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
@@ -98,7 +101,8 @@ queue()
     .defer(d3.csv, "data/CO2emissions.csv")
     .defer(d3.csv, "data/GDP.csv")
     .defer(d3.csv, "data/energyuse.csv")
-  .await(function(error, mapTopJson, C02DataCsv, GDPDataCsv, energyDataCsv){
+    .defer(d3.csv, "data/Population.csv")
+  .await(function(error, mapTopJson, C02DataCsv, GDPDataCsv, energyDataCsv, PopulationDataCsv){
 
       // --> PROCESS DATA
       C02DataCsv.forEach(function(data){
@@ -137,6 +141,19 @@ queue()
               }
           }
       });
+      // --> PROCESS DATA
+      PopulationDataCsv.forEach(function(data){
+          for(var j = 1960; j < 2016; j++){
+              var jnum = j.toString();
+              if(data[jnum] == "")
+              {
+                  data[jnum] = "N/A";
+              }
+              else{
+                  data[jnum] = +data[jnum];
+              }
+          }
+      });
 
       // world global variable
       world = mapTopJson.features;
@@ -152,10 +169,10 @@ queue()
 
           for (var j = 0; j < jsonCountries.length; j++){
               if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayC02){
-                      var attr = keyArrayC02[key];
+                  for (var key in keyArrayYears){
+                      var attr = keyArrayYears[key];
                       var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr] = val;
+                      jsonCountries[j].properties[attr + "c02"] = val;
                   }
                   break;
               }
@@ -170,10 +187,10 @@ queue()
 
           for (var j = 0; j < jsonCountries.length; j++){
               if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayGDP){
-                      var attr = keyArrayGDP[key];
+                  for (var key in keyArrayYears){
+                      var attr = keyArrayYears[key];
                       var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr] = val;
+                      jsonCountries[j].properties[attr + "gdp"] = val;
                   }
                   break;
               }
@@ -188,15 +205,16 @@ queue()
 
           for (var j = 0; j < jsonCountries.length; j++) {
               if (jsonCountries[j].properties.adm0_a3_is == csvCode) {
-                  for (var key in keyArrayEnergy) {
-                      var attr = keyArrayEnergy[key];
+                  for (var key in keyArrayYears) {
+                      var attr = keyArrayYears[key];
                       var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr] = val;
+                      jsonCountries[j].properties[attr + "energy"] = val;
                   }
                   break;
               }
           }
       }
+      console.log(jsonCountries);
 
       // Create Dropdown
       dropdown(jsonCountries);
@@ -249,12 +267,12 @@ function updateChoropleth(jsonCountries) {
 
 function colorscale(jsonCountries) {
 
-    if (shown == "2011"){
+    if (shown == "2011c02"){
         var color = d3.scale.quantize()
             .domain([0, 25])
             .range(colorbrewer.Reds[9]);
     }
-    else if (shown == "2014"){
+    else if (shown == "2014gdp"){
         var color = d3.scale.quantize()
             .domain([0, 1000000000000])
             .range(colorbrewer.Greens[9]);
@@ -288,10 +306,10 @@ function dropdown(jsonCountries) {
         .attr("class", "form-control")
         .on("change", function() {
             shown = this.value;
-            if (shown == "2011"){
+            if (shown == "2011c02"){
                 CurrentScale = C02scale;
             }
-            else if (shown == "2014"){
+            else if (shown == "2014gdp"){
                 CurrentScale = GDPscale;
             }
             else{
@@ -321,13 +339,13 @@ function dropdown(jsonCountries) {
         .attr("class", "selection")
         .attr("value", function(d) {return d})
         .text(function(d) {
-            if ( d == "2011"){
+            if ( d == "2011c02"){
                 return "2011 CO2 Emissions (metric ton per capita)";
             }
-            if ( d == "2014"){
+            if ( d == "2014gdp"){
                 return "2014 GDP (Current US$)";
             }
-            if ( d == "2013"){
+            if ( d == "2013energy"){
                 return "2013 Electric Power Consumption (kWh per capita)";
             }
         });
