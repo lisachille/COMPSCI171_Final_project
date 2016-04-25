@@ -1,139 +1,459 @@
+<!-- FlatFy Theme - Andrea Galanti /-->
 <!doctype html>
-<html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
 <head>
-	<meta charset="utf-8">
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>CS171 - Final Project</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="Flatfy Free Flat and Responsive HTML5 Template ">
+    <meta name="author" content="">
 
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/style.css">
+    <title>Electricity Consumption, GDP, and C02 Emissions</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Google Web Font -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Arvo:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Custom CSS-->
+    <link href="css/general.css" rel="stylesheet">
+
+	 <!-- Owl-Carousel -->
+    <link href="css/custom.css" rel="stylesheet">
+	<link href="css/owl.carousel.css" rel="stylesheet">
+    <link href="css/owl.theme.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<link href="css/animate.css" rel="stylesheet">
+
+	<!-- Magnific Popup core CSS file -->
+	<link rel="stylesheet" href="css/magnific-popup.css">
+
+	<script src="js/modernizr-2.8.3.min.js"></script>  <!-- Modernizr /-->
+	<!--[if IE 9]>
+		<script src="js/PIE_IE9.js"></script>
+	<![endif]-->
+	<!--[if lt IE 9]>
+		<script src="js/PIE_IE678.js"></script>
+	<![endif]-->
+
+	<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+	<![endif]-->
+
 </head>
-    <div class = "container header">
-        <img class = "titleworld" src="img/TitlePic.jpg" height="300" width="325">
-        <h1 class = "gt"><span>The Flying Squirrels Present</span></h1>
-        <h2 class = "title"><span>Global C02 Emissions, Electricity Consumption, and GDP (come up with better title later)</span></h2>
+
+<body id="home">
+
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status"></div>
+	</div>
+
+	<!-- FullScreen -->
+    <div class="intro-header">
+		<div class="col-xs-12 text-center abcen1">
+			<h1 class="h1_home wow fadeIn" data-wow-delay="0.4s">Energy and the Environment</h1>
+			<h3 class="h3_home wow fadeIn" data-wow-delay="0.6s">A CS171 Final Project</h3>
+			<ul class="list-inline intro-social-buttons">
+				<li id="download" ><a href="#visualizaiton" class="btn  btn-lg mybutton_standard wow swing wow fadeIn" data-wow-delay="1.2s"><span class="network-name">Take me straight to the visualization</span></a>
+				</li>
+			</ul>
+		</div>
+        <!-- /.container -->
+		<div class="col-xs-12 text-center abcen wow fadeIn">
+			<div class="button_down ">
+				<a class="imgcircle wow bounceInUp" data-wow-duration="1.5s"  href="#whatis"> <img class="img_scroll" src="img/icon/circle.png" alt=""> </a>
+			</div>
+		</div>
     </div>
 
-    <div class = "cite">(World Pic) https://s-media-cache-ak0.pinimg.com/736x/e2/fc/e5/e2fce5b2569ed0faa83d6577316ff2ec.jpg</div>
+	<!-- NavBar-->
+	<nav class="navbar-default" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#home">Global Warming</a>
+			</div>
 
-    <div class="container info">
-        <h1>Global Warming?</h1>
-        <div>
-            So we've all heard of <strong> Global Warming </strong> at some point. But what is it exactly, and how is it caused?
-        </div>
-        <br>
-        <div>
-            <strong>Facts About Global Warming </strong> Insert science and stuff here. Images too.
-        </div>
-        <br>
-        <div>
-            <strong> More info... </strong> Blah, blah, blah.
-        </div>
-        <div class="col-md-8 cite">
-            <img class=" mpic" style="display: block;" src="img/ghouse.jpg" height="500" width="600">
-            http://www.dinosaurfact.net/Extinctpictures/Greenhouse_effect2.jpg
-        </div>
-        <div id = "keyfacts">
-            <h2>Key Facts</h2>
-            <ul>
-                <li><strong> CATEGORY: </strong> FACTS </li>
-                <li><strong> CATEGORY:   </strong> FACTS </li>
-                <li><strong> CATEGORY:  </strong> FACTS </li>
-                <li><strong> CATEGORY:  </strong> FACTS</li>
-            </ul>
-        </div>
-    </div>
+			<div class="collapse navbar-collapse navbar-right navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
 
-    <div class="container" id = "progress">
-        <h1>How do All these Factors Play into Global Warming?</h1>
-        <div>
-            <strong> Energy Consumption </strong> Info.
-        </div>
-        <br>
-        <div>
-            <strong> CO2 Emissions </strong> Info.
-        </div>
-        <br>
-        <div>
-            <strong> GDP </strong> Info.
-        </div>
-        <div class="cite factory">
-            <img class=" hpic" style="display: block;" src="img/factory.jpg" height="275" width="700">
-            <div class="factorytext">
-                http://cdn.wonderfulengineering.com/wp-content/uploads/2013/11/factory-wallpaper-2-798x350.jpg
+					<li class="menuItem"><a href="#whatis">Global Warming</a></li>
+					<li class="menuItem"><a href="#useit">Factors</a></li>
+					<li class="menuItem"><a href="#visualizaiton">Visualization</a></li>
+					<li class="menuItem"><a href="#credits">Future</a></li>
+				</ul>
+			</div>
+
+		</div>
+	</nav>
+
+	<!-- What is -->
+	<div id="whatis" class="content-section-b" style="border-top: 0">
+		<div class="container">
+
+			<div class="col-md-6 col-md-offset-3 text-center wrap_title">
+				<h2>Global Warming?</h2>
+				<p class="lead" style="margin-top:0">So we've all heard of it. But how exactly does it work?</p>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col-sm-4 wow fadeInDown text-center">
+				  <img class="rotate" src="img/icon/tweet.svg" alt="Generic placeholder image">
+				  <h3>Step</h3>
+				  <p class="lead">Use text here, and add images where there are logos please. </p>
+
+				  <!-- <p><a class="btn btn-embossed btn-primary view" role="button">View Details</a></p> -->
+				</div><!-- /.col-lg-4 -->
+
+				<div class="col-sm-4 wow fadeInDown text-center">
+				  <img  class="rotate" src="img/icon/picture.svg" alt="Generic placeholder image">
+				   <h3>By</h3>
+				   <p class="lead">Insert info here. </p>
+				   <!-- <p><a class="btn btn-embossed btn-primary view" role="button">View Details</a></p> -->
+				</div><!-- /.col-lg-4 -->
+
+				<div class="col-sm-4 wow fadeInDown text-center">
+				  <img  class="rotate" src="img/icon/retina.svg" alt="Generic placeholder image">
+				   <h3>Step</h3>
+					<p class="lead">Insert info here. </p>
+				  <!-- <p><a class="btn btn-embossed btn-primary view" role="button">View Details</a></p> -->
+				</div><!-- /.col-lg-4 -->
+
+			</div><!-- /.row -->
+
+			<div class="row tworow">
+
+				<div class="col-sm-4  wow fadeInDown text-center">
+				  <img class="rotate" src="img/icon/laptop.svg" alt="Generic placeholder image">
+				  <h3>Explain</h3>
+				  <p class="lead">Insert info here. </p>
+				 <!-- <p><a class="btn btn-embossed btn-primary view" role="button">View Details</a></p> -->
+				</div><!-- /.col-lg-4 -->
+
+				<div class="col-sm-4 wow fadeInDown text-center">
+				  <img  class="rotate" src="img/icon/map.svg" alt="Generic placeholder image">
+				   <h3>How</h3>
+				   <p class="lead">Insert info here. </p>
+				   <!-- <p><a class="btn btn-embossed btn-primary view" role="button">View Details</a></p> -->
+				</div><!-- /.col-lg-4 -->
+
+				<div class="col-sm-4 wow fadeInDown text-center">
+				  <img  class="rotate" src="img/icon/browser.svg" alt="Generic placeholder image">
+				   <h3>It Works</h3>
+				 <p class="lead">Insert info here. </p>
+				  <!-- <p><a class="btn btn-embossed btn-primary view" role="button">View Details</a></p> -->
+				</div><!-- /.col-lg-4 -->
+
+			</div><!-- /.row -->
+		</div>
+	</div>
+
+	<!-- Use it -->
+    <div id ="useit" class="content-section-a">
+
+        <div class="container">
+
+            <div class="row">
+
+				<div class="col-sm-6 pull-right wow fadeInRightBig">
+                    <img class="img-responsive factory" src="img/factory.jpg" alt="">
+                </div>
+
+                <div class="col-sm-6 wow fadeInLeftBig"  data-animation-delay="200">
+                    <h3 class="section-heading">Factors</h3>
+					<div class="sub-title lead3">How do All these Factors Play into Global Warming?</div>
+                    <p class="lead">
+						Energy Consumption Info.
+					</p>
+					<p class ="lead">
+						CO2 Emissions Info.
+					</p>
+					<p class ="lead">
+						GDP Info.
+					</p>
+
+					 <p><a class="btn btn-embossed btn-primary" href="#" role="button">View Details</a>
+					 <a class="btn btn-embossed btn-info" href="#" role="button">Visit Website</a></p>
+				</div>
             </div>
         </div>
+        <!-- /.container -->
     </div>
 
-    <div class="container map">
-        <h1>Global C02 Emissions, Electricity Consumption, and GDP</h1>
-        <div>(scroll to zoom, click and drag to move map.)</div>
-        <span id = "select" ></span>
-        <div class="col-md-12"  id="map-area">
+    <div class="content-section-b" id = "visualizaiton">
+
+		<div class="container">
+            <div class="row">
+                <div class="col-sm-8 wow fadeInLeftBig">
+                     <div class="container map">
+        				<h3>Global C02 Emissions, Electricity Consumption, and GDP</h3>
+        				<div>(scroll to zoom, click on Country to center, click and drag to reposition map.)</div>
+        					<span id = "select" ></span>
+        				<div class="col-md-6"  id="map-area"></div>
+        			</div>
+     				<div id="slider"> </div>
+                </div>
+
+                <div class="col-sm-4 wow fadeInRightBig"  data-animation-delay="200">
+                  <div class = "container" id="pieChart"></div>
+				</div>
+			</div>
         </div>
     </div>
 
-    <div class="container" >
-        <h1>Charts, Steamgraph, Bubble Chart</h1>
-        <div>
-            <strong> Small Blurb. </strong>
+    <div class="content-section-a">
+
+		<div class="container" >
+			<h3>Charts, Steamgraph, Bubble Chart</h3>
+			<div>
+				<strong> Small Blurb. </strong>
+			</div>
+
+			<div class="col-md-12 wow fadeInLeftBig" id = "bar">
+				<div class="drowndown-group">
+					<select class="form-control" name="type" id= "selecttype" onchange= "changeVisualization()">
+						<option selected value="energy">Energy Consumption</option>
+						<option selected value="C02">CO2 Emissions</option>
+
+					</select>
+
+				</div>
+				<div id="barChart"></div>
+			</div>
+
+			<div class="col-md-8 wow fadeInRightBig" id = "line-area">
+				<select class="form-control" id="data-type" onchange="loadData()">
+					<option value="GDP">GDP</option>
+					<option value="energy-consumption">Electricity consumption</option>
+				</select>
+			</div>
+		</div>
+
+    </div>
+
+	<!-- Screenshot -->
+	<div id="screen" class="content-section-b">
+        <div class="container">
+          <div class="row" >
+			 <div class="col-md-6 col-md-offset-3 text-center wrap_title ">
+				<h3>The World We Live In</h3>
+				<p class="lead" style="margin-top:0">How can we protect it?</p>
+			 </div>
+		  </div>
+		    <div class="row wow bounceInUp" >
+              <div id="owl-demo" class="owl-carousel">
+
+				<a href="img/slide/blackworld.jpg" class="image-link">
+					<div class="item">
+						<img  class="img-responsive img-rounded" src="img/slide/blackworld.jpg" alt="Owl Image">
+					</div>
+				</a>
+
+				<a href="img/slide/water.jpeg" class="image-link">
+					<div class="item">
+						<img  class="img-responsive img-rounded" src="img/slide/water.jpeg" alt="Owl Image">
+					</div>
+				</a>
+				<a href="img/slide/winter.jpg" class="image-link">
+					<div class="item">
+						<img  class="img-responsive img-rounded" src="img/slide/winter.jpg" alt="Owl Image">
+					</div>
+				</a>
+
+				  <a href="img/slide/city.jpg" class="image-link">
+					  <div class="item">
+						  <img  class="img-responsive img-rounded" src="img/slide/city.jpg" alt="Owl Image">
+					  </div>
+				  </a>
+
+               <a href="img/slide/trains.jpg" class="image-link">
+					<div class="item">
+						<img  class="img-responsive img-rounded" src="img/slide/trains.jpg" alt="Owl Image">
+					</div>
+				</a>
+
+				<a href="img/slide/dead.jpg" class="image-link">
+					<div class="item">
+						<img  class="img-responsive img-rounded" src="img/slide/dead.jpg" alt="Owl Image">
+					</div>
+				</a>
+              </div>
+          </div>
         </div>
 
-        <div class="col-md-8" id = "bar">
-            <div class="drowndown-group">
-                <select class="form-control" name="type" id= "selecttype" onchange= "changeVisualization()">
-                    <option selected value="energy">Energy Consumption</option>
-                    <option selected value="C02">CO2 Emissions</option>
 
-                </select>
+	</div>
 
+	<div  class="content-section-c ">
+		<div class="container">
+			<div class="row">
+			<div class="col-md-6 col-md-offset-3 text-center white">
+				<h2>Support Clean Energy</h2>
+			 </div>
+			<div class="col-md-6 col-md-offset-3 text-center">
+				<div class="mockup-content">
+						<div class="morph-button wow pulse morph-button-inflow morph-button-inflow-1">
+							<p><a class="btn btn-embossed btn-primary" href="http://www.ucsusa.org/clean_energy/our-energy-choices/renewable-energy/public-benefits-of-renewable.html#.Vx2gB6ODGko" role="button">Click Here to Find Out More</a>
+						</div>
+			</div>
+			</div>>
+		</div>
+	</div>
+
+	<!-- Credits -->
+	<div id="credits" class="content-section-a">
+		<div class="container">
+			<div class="row">
+
+			<div class="col-md-6 col-md-offset-3 text-center wrap_title">
+				<h2>Thinking Forward...</h2>
+				<p class="lead" style="margin-top:0">So what now?</p>
+			 </div>
+
+				<div class="col-sm-6  block wow bounceIn">
+					<div class="row">
+						<div class="col-md-4 box-icon rotate">
+							<i class="fa fa-desktop fa-4x "> </i>
+						</div>
+						<div class="col-md-8 box-ct">
+							<h3> Things </h3>
+							<p> Thinking forward, plans for future </p>
+						</div>
+				  </div>
+			  </div>
+			  <div class="col-sm-6 block wow bounceIn">
+					<div class="row">
+					  <div class="col-md-4 box-icon rotate">
+						<i class="fa fa-picture-o fa-4x "> </i>
+					  </div>
+					  <div class="col-md-8 box-ct">
+						<h3> Things </h3>
+						<p> etc. </p>
+					  </div>
+					</div>
+			  </div>
+		  </div>
+
+		  <div class="row tworow">
+				<div class="col-sm-6  block wow bounceIn">
+					<div class="row">
+						<div class="col-md-4 box-icon rotate">
+							<i class="fa fa-magic fa-4x "> </i>
+						</div>
+						<div class="col-md-8 box-ct">
+							<h3> Things </h3>
+							<p> etc. </p>
+						</div>
+				  </div>
+			  </div>
+			  <div class="col-sm-6 block wow bounceIn">
+					<div class="row">
+					  <div class="col-md-4 box-icon rotate">
+						<i class="fa fa-heart fa-4x "> </i>
+					  </div>
+					  <div class="col-md-8 box-ct">
+						<h3> Things</h3>
+						<p> Please come up with stuff to put here.</p>
+					  </div>
+					</div>
+			  </div>
+		  </div>
+		</div>
+	</div>
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h3 class="footer-title">A CS171 Final Project</h3>
+            <p>Thanks for visiting!<br/>
+              Visit the CS171 Website! <br/>
+              Go to: <a  href="http://www.cs171.org/" target="_blank">http://www.cs171.org/</a>
+            </p>
+
+			<!-- LICENSE -->
+			<a rel="cc:attributionURL" href="http://www.andreagalanti.it/flatfy"
+		   property="dc:title">Flatfy Theme </a> by
+		   <a rel="dc:creator" href="http://www.andreagalanti.it"
+		   property="cc:attributionName">Andrea Galanti</a>
+		   is licensed to the public under
+		   <BR>the <a rel="license"
+		   href="http://creativecommons.org/licenses/by-nc/3.0/it/deed.it">Creative
+		   Commons Attribution 3.0 License - NOT COMMERCIAL</a>.
+
+
+          </div> <!-- /col-xs-7 -->
+
+          <div class="col-md-5">
+            <div class="footer-banner">
+              <h3 class="footer-title">The Flying Squirrels</h3>
+              <ul>
+                <li>Anubha Srivastava</li>
+                <li>Lisa Chille</li>
+                <li>Grant Riew</li>
+              </ul>
+              Go to: <a href="https://github.com/lisachille/COMPSCI171_final_project" target="_blank">GitHub</a>
             </div>
+          </div>
         </div>
+      </div>
+    </footer>
 
-        <div class="col-md-8" id = "line-area">
-            <select class="form-control" id="data-type" onchange="loadData()">
-                <option value="GDP">GDP</option>
-                <option value="energy-consumption">Electricity consumption</option>
-            </select>
-
-            INSERT YOUR VISUALIZATIONS HERE!
-        </div>
-        <div id = "blurb">
-            Explain these graphs and stuff!
-        </div>
-    </div>
-
-    <div class="container bottom">
-        <h1>Moving forward</h1>
-        <div class = "col-md-7 forward">
-           Addressing Global Warming...Give recommendations on what to do...fill in text...paragraphs...stuffs...for now, I'll just fill the space..I'm really tired sorry. Don't judge.Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah. blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah. blah blah blah blah blah blah blah blah! blah blah blah blah blah blah blah blah. blah blah blah blah? blah blah blah blah. <br> We still have yet to get actual factual stuff for Global Warming. We will cite all that information, and try to make a compelling story. We have yet to implement linked views, and we might include other datasets that the World Bank has to offer...
-        </div>
-        <div class = "col-md-5 green cite">
-            <img style="display: block;" src="img/green.jpg" height="300" width="450">
-            http://data.ba-bamail.com/Images/2013/9/2/f195068d-36b1-4529-9c17-79a0ba6e9378.jpg
-        </div>
-    </div>
-
-
-
-	<!-- Load JS libraries -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script src="js/owl.carousel.js"></script>
+	<script src="js/script.js"></script>
 	<script src="js/queue.min.js"></script>
 	<script src="js/topojson.js"></script>
 	<script src="js/d3.min.js"></script>
     <script src="js/d3.tip.js"></script>
     <script src="js/colorbrewer.js"></script>
     <script src="js/legend.js"></script>
+    <script src="js/d3pie.js"></script>
+	<!-- StikyMenu -->
+	<script src="js/stickUp.min.js"></script>
+	<script type="text/javascript">
+	  jQuery(function($) {
+		$(document).ready( function() {
+		  $('.navbar-default').stickUp();
 
+		});
+	  });
 
+	</script>
+	<!-- Smoothscroll -->
+	<script type="text/javascript" src="js/jquery.corner.js"></script>
+	<script src="js/wow.min.js"></script>
+	<script>
+	 new WOW().init();
+	</script>
+	<script src="js/classie.js"></script>
+	<script src="js/uiMorphingButton_inflow.js"></script>
+	<!-- Magnific Popup core JS file -->
+	<script src="js/jquery.magnific-popup.js"></script>
 	<!-- Choropleth and second visualization -->
-	<!--<script src="js/vis-choropleth.js"></script>
-	<script src="js/vis-second.js"></script>-->
-    <script src="js/vis-lineexp.js"></script>
-    <!--<script src="js/vis-world_temp.js"></script>-->
 
+	<script src="js/vis-choropleth.js"></script>
+    <script src="js/slidertest.js"></script>
+    <script src="js/pie.js"></script>
+	<script src="js/vis-second.js"></script>
+    <script src="js/vis-lineexp.js"></script>
+    <script src="js/barchart.js"></script>
 </body>
+
 </html>

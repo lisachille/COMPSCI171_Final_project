@@ -60,12 +60,6 @@ var lineGroup = svg.append("g")
     .append("path")
     .attr("class", "line");
 
-// Define a y-axis label
-var axisLabel = svg.append("text")
-    .attr("x", padding)
-    .attr("y", padding - margin.top)
-    .attr("text-anchor", "middle");
-
 d3.json("data/CO2emissions2.json", function(error, DATA) {
 
     // Error checking: Making sure the file loaded correctly
@@ -93,7 +87,7 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
         return (d.emission != 0);
     });
 
-    // Update the domain for the scales
+// Update the domain for the scales
     xScale.domain(d3.extent(filteredData,function(d){
         return d.year;
     }));
