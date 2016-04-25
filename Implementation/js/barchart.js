@@ -81,7 +81,7 @@ BarChart.prototype.UpdateVis = function() {
         .data(vis.data);
     rect.enter().append("rect")
         .style("fill", "steelblue")
-        .attr("class", "bar")
+        .attr("class", "bar");
 
         rect.attr("x", function (d) {
             return vis.x(d.Code);
