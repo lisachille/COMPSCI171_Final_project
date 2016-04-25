@@ -61,7 +61,7 @@ var yAxisGroup = svg.append("g")
 // Declare line group
 var lineGroup = svg.append("g")
     .append("path")
-    .attr("class", "line");
+    .attr("class", "linetest");
 
 // Define a y-axis label
 var axisLabel = svg.append("text")
