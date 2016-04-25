@@ -4794,6 +4794,9 @@ footer p {
 
 .bar {
     fill: steelblue;
+.transition()
+.duration(300)
+.
 }
 
 .bar:hover {

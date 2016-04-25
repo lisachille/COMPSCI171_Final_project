@@ -47,25 +47,23 @@ var myBar;
             });
 
 
-
-            C02DATA = C02DataCsv;
-            ENERGYDATA = energyDataCsv;
+            BIGC02DATA = C02DataCsv;
+            BIGENERGYDATA = energyDataCsv;
             //SC02= C02DATA.sort (function(d){ return d3.ascending(d[2011])});
             //console.log(SC02);
             //Senergy= ENERGYDATA.sort;
 
-
+            var C02DATA= BIGC02DATA.sort(function(a, b){return a-b});
+            var ENERGYDATA= BIGENERGYDATA.sort(function(a, b){return a-b});
 
             //console.log(C02);
             //console.log(energy);
-            C02 = C02DATA.slice(0, 5);
-            energy = ENERGYDATA.slice(0, 5);
+
+            C02 = C02DATA.slice(0, 20);
+            energy = ENERGYDATA.slice(0, 20);
             data = C02;
             myBar = new BarChart("#barChart", data);
             changeVisualization();
-
-
-
 
 
 

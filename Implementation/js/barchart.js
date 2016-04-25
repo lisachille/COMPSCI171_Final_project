@@ -58,13 +58,14 @@ BarChart.prototype.UpdateVis = function() {
         return d.Code
     }));
     this.y.domain([0, d3.max(vis.data, function (d) {
-        return d[1977]
+        return d[2011]
     })]);
 
     vis.svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + vis.height + ")")
         .call(vis.xAxis);
+
 
     vis.svg.append("g")
         .attr("class", "y axis")
@@ -75,7 +76,6 @@ BarChart.prototype.UpdateVis = function() {
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text("C02 Emissions");
-
 
     var rect= vis.svg.selectAll(".bar")
         .data(vis.data);
@@ -88,13 +88,14 @@ BarChart.prototype.UpdateVis = function() {
         })
         .attr("width", vis.x.rangeBand())
         .attr("y", function (d) {
-            return vis.height - vis.y(d[1977]);
+            return vis.height - vis.y(d[2011]);
         })
         .attr("height", function (d) {
-            return vis.y(d[1977]);
+            return vis.y(d[2011]);
         });
 
     rect.exit().remove();
+
 };
 //derived from Mike Bostock's https://bl.ocks.org/mbostock/3943967 Tutorial
 
