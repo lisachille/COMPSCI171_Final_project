@@ -4832,9 +4832,10 @@ footer p {
     stroke-width: 1.5px;
 }
 
-.circles{
-    stroke: #1C9A3D;
-    fill: white;
+.circles {
+  stroke: #1C9A3D;
+  fill: white;
+}
 
 .axislider {
     font: 10px sans-serif;
