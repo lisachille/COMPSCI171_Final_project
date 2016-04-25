@@ -1,7 +1,10 @@
 
 // initial title, create for first time
-title = "Energy Breakdown";
-year = 2014;
+title = "Please Click on a Country";
+bioval = 10;
+nucval = 10;
+fuelval = 10;
+otherval = 10;
 createpie();
 function createpie(){
     pie = new d3pie("pieChart", {
@@ -12,7 +15,7 @@ function createpie(){
                 "font": "open sans"
             },
             "subtitle": {
-                "text": "Fossil fuel energy consumption, Renewable energy consumption, Alternative and nuclear energy",
+                "text": "Breakdown by Source: Fossil fuel energy consumption, Renewable energy consumption, and Alternative and nuclear energy.",
                 "color": "#999999",
                 "fontSize": 12,
                 "font": "open sans"
@@ -26,7 +29,7 @@ function createpie(){
             "location": "bottom-left"
         },
         "size": {
-            "canvasWidth": 690,
+            "canvasWidth": 750,
             "pieOuterRadius": "86%"
         },
         "data": {
@@ -34,18 +37,23 @@ function createpie(){
             "content": [
                 {
                     "label": "Alternative/Nuclear energy",
-                    "value": 40,
+                    "value": nucval,
                     "color": "#5c97d4"
                 },
                 {
                     "label": "Fossil Fuels",
-                    "value": 56,
+                    "value": fuelval,
                     "color": "#a05c56"
                 },
                 {
                     "label": "Biomass",
-                    "value": 4,
+                    "value": bioval,
                     "color": "#95cd5a"
+                },
+                {
+                    "label": "Other",
+                    "value": otherval,
+                    "color": "#e98125"
                 }
             ]
         },

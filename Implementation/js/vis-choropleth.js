@@ -1,15 +1,16 @@
 // inspiration from http://www.cartographicperspectives.org/index.php/journal/article/view/cp78-sack-et-al/1359
 // http://bl.ocks.org/mbostock/2206340
 
+// starting year
+year = 2013;
+
 // make slider (http://sujeetsr.github.io/d3.slider/)
 // tick formatter
 var formatter = d3.format(".0f");
 var tickFormatter = function(d) {
     return formatter(d);
 };
-var slider = d3.slider().min(1960).max(2015).ticks(10).showRange(true).value(2014).tickFormat(tickFormatter);
-// Render the slider in the div
-d3.select('#slider').call(slider);
+
 
 // --> CREATE SVG DRAWING AREA
 var width = 960,
@@ -41,7 +42,7 @@ g.append("rect")
     .style("stroke-width", 1);
 
 // used to join datasets later
-var keyArray = ["2011c02", "2014gdp", "2013energy"];
+var keyArray = [year + "c02", year + "gdp", year + "energy"];
 // which key to show (initially 0)
 var shown = keyArray[0];
 // used to join datasets later
@@ -72,7 +73,7 @@ var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
     var percent = "";
     var val;
     // cases
-    if (shown == "2011c02"){
+    if (shown == year + "c02"){
         type = "CO2 Emissions";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
@@ -81,7 +82,7 @@ var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
             val = d.properties[shown].toFixed(2);
         }
     }
-    else if (shown == "2013energy"){
+    else if (shown == year + "energy"){
         type = "Electric Power Consumption)";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
@@ -90,7 +91,7 @@ var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
             val = commaSeparateNumber(d.properties[shown].toFixed(0));
         }
     }
-    else if (shown == "2014gdp"){
+    else if (shown == year + "gdp"){
         type = "GDP";
         if(d.properties[shown] == null || isNaN(d.properties[shown])) {
             val = "Data N/A";
@@ -317,12 +318,12 @@ function updateChoropleth() {
 
 function colorscale() {
 
-    if (shown == "2011c02"){
+    if (shown == year + "c02"){
         var color = d3.scale.quantize()
             .domain([0, 25])
             .range(colorbrewer.Reds[9]);
     }
-    else if (shown == "2014gdp"){
+    else if (shown == year + "gdp"){
         var color = d3.scale.quantize()
             .domain([0, 1000000000000])
             .range(colorbrewer.Greens[9]);
@@ -356,10 +357,10 @@ function dropdown() {
         .attr("class", "form-control")
         .on("change", function() {
             shown = this.value;
-            if (shown == "2011c02"){
+            if (shown == year + "c02"){
                 CurrentScale = C02scale;
             }
-            else if (shown == "2014gdp"){
+            else if (shown == year + "gdp"){
                 CurrentScale = GDPscale;
             }
             else{
@@ -389,13 +390,13 @@ function dropdown() {
         .attr("class", "selection")
         .attr("value", function(d) {return d})
         .text(function(d) {
-            if ( d == "2011c02"){
+            if ( d == year + "c02"){
                 return "CO2 Emissions (metric ton per capita)";
             }
-            if ( d == "2014gdp"){
+            if ( d == year + "gdp"){
                 return "GDP (Current US$)";
             }
-            if ( d == "2013energy"){
+            if ( d == year + "energy"){
                 return "Electric Power Consumption (kWh per capita)";
             }
         });
@@ -443,7 +444,23 @@ function clicked(d) {
 
     // name of clicked country
     name = d.properties.name;
-    title = name + " Energy Breakdown";
+    title = "Breakdown: " + name + " Electric Power Consumption (by %)";
+
+    if (d.properties[year + "bio"] == null || isNaN(d.properties[year + "bio"]) || isNaN(nucval = d.properties[year + "nuclear"]) || isNaN(fuelval = d.properties[year + "fuels"]))
+    {
+        bioval = 0;
+        nucval = 0;
+        fuelval = 0;
+        otherval = 0;
+        title = "Data for " + name + " N/A";
+    }
+    else
+    {
+        bioval = d.properties[year + "bio"];
+        nucval = d.properties[year + "nuclear"];
+        fuelval = d.properties[year + "fuels"];
+        otherval = 100.2 - bioval - nucval - fuelval;
+    }
 
     // update pie
     pie.destroy();

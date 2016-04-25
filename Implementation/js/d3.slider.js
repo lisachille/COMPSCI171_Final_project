@@ -1,5 +1,3 @@
-var slidervalue;
-
 d3.slider = function module() {
   "use strict";
 
@@ -181,7 +179,8 @@ d3.slider = function module() {
     }
     svg.selectAll(".dragger").select("text")
     .text(displayValue);
-    slidervalue = displayValue;
+
+
    
     if (range) { 
       svg.selectAll(".d3slider-rect-value")
@@ -287,6 +286,4 @@ d3.slider = function module() {
   return slider;
 
 };
-
-
 
