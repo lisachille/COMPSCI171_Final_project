@@ -4814,6 +4814,28 @@ footer p {
     display: none;
 }
 
+.line-annual {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.line-years {
+    fill: none;
+    stroke: pink;
+    stroke-width: 1.5px;
+}
+
+.line {
+    fill: none;
+    stroke: pink;
+    stroke-width: 1.5px;
+}
+
+.circles{
+    stroke: #1C9A3D;
+    fill: white;
+
 .axislider {
     font: 10px sans-serif;
     -webkit-user-select: none;
