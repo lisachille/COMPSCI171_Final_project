@@ -188,3 +188,14 @@ body {
     stroke: pink;
     stroke-width: 1.5px;
 }
+
+.line {
+    fill: none;
+    stroke: pink;
+    stroke-width: 1.5px;
+}
+
+.circles{
+    stroke: #1C9A3D;
+    fill: white;
+}
