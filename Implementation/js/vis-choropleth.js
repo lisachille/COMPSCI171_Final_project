@@ -13,7 +13,7 @@ var tickFormatter = function(d) {
 
 
 // --> CREATE SVG DRAWING AREA
-var width = 960,
+var width = 900,
     height = 500;
 
 var svgmap = d3.select("#map-area").append("svg")
@@ -444,7 +444,11 @@ function clicked(d) {
 
     // name of clicked country
     name = d.properties.name;
+<<<<<<< HEAD
     title = "Breakdown: " + name + " Electric Power Consumption (by %)";
+=======
+    title = name + " Power Consumption (by %)";
+>>>>>>> f7fb7760163f241ccc7015f8e05b3924ad7db63f
 
     if (d.properties[year + "bio"] == null || isNaN(d.properties[year + "bio"]) || isNaN(nucval = d.properties[year + "nuclear"]) || isNaN(fuelval = d.properties[year + "fuels"]))
     {

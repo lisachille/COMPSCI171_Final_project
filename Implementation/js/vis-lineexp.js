@@ -20,9 +20,6 @@ var svg = d3.select("#line-area").append("svg")
 // Date parser (https://github.com/mbostock/d3/wiki/Time-Formatting)
 var formatDate = d3.time.format("%Y");
 
-// All data
-var DATA;
-
 // Initialise scales
 var xScale = d3.time.scale()
     .range([0,width]);
@@ -63,37 +60,57 @@ var lineGroup = svg.append("g")
     .append("path")
     .attr("class", "line");
 
-// Define a y-axis label
-var axisLabel = svg.append("text")
-    .attr("x", padding)
-    .attr("y", padding - margin.top)
-    .attr("text-anchor", "middle");
+d3.json("data/CO2emissions2.json", function(error, DATA) {
 
-// Initialize data
-loadData();
+    // Error checking: Making sure the file loaded correctly
+    if (error) throw error;
 
-// Load CSV file
-function loadData() {
-    d3.json("data/CO2emissions2.json", function(error, json) {
+    DATA.forEach(function(d){
+        // Convert string to 'date object'
+        d.year = formatDate.parse(d.year);
 
-        // Error checking
-        if (error) throw error;
+        // Convert numeric values to 'numbers'
+        for (var i = 0; i < 248; i++){
+            d.values[i].emission = +d.values[i].emission
+        }
+    });
 
-        json.forEach(function(d){
-            // Convert string to 'date object'
-            d.year = formatDate.parse(d.year);
+    var filteredData = [];
 
-            // Convert numeric values to 'numbers'
-            for (var i = 0; i < 248; i++){
-                d.values[i].emission = +d.values[i].emission
-            }
-        });
+    // Filter data of the relevant country
+    DATA.forEach(function(d){
+        filteredData.push({year: d.year, emission: d.values[4].emission})
+    });
 
-        // Store json data in global variable
-        DATA = json;
+    // Filter out the data that is not available
+    filteredData = filteredData.filter(function(d){
+        return (d.emission != 0);
+    });
 
-        var filteredData = [];
+// Update the domain for the scales
+    xScale.domain(d3.extent(filteredData,function(d){
+        return d.year;
+    }));
+    yScale.domain(d3.extent(filteredData,function(d){
+        return d.emission;
+    }));
 
+    // Define line function
+    var line = d3.svg.line()
+        .x(function(d) { return xScale(d.year); })
+        .y(function(d) { return yScale(d.emission); })
+        .interpolate("linear");
+
+    // Append path to line group
+    lineGroup.transition().duration(800)
+        .attr("d", line(filteredData))
+    ;
+
+    tip.html(function(d){
+        return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " + d.emission.toFixed(2) + "t/capita";
+    });
+
+<<<<<<< HEAD
         // Filter data of the relevant country
         DATA.forEach(function(d){
             filteredData.push({year: d.year, emission: d.values[4].emission})
@@ -122,42 +139,41 @@ function loadData() {
 
         tip.html(function(d){
             return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " + d.emission.toFixed(2) + "t/capita";
+=======
+    // Call the tool-tip
+    svg.call(tip);
+
+    // Data-bind
+    var circle = svg.selectAll("circle")
+        .data(filteredData);
+
+    // Enter/Append circles
+    circle.enter()
+        .append("circle")
+        .attr("class", "circles")
+        .attr("r", 4);
+
+    // Update
+    circle
+        .transition().duration(800)
+        .attr("cx", function(d){
+            return xScale(d.year);
+        })
+        .attr("cy", function(d){
+            return yScale(d.emission);
+>>>>>>> f7fb7760163f241ccc7015f8e05b3924ad7db63f
         });
 
-        // Call the tool-tip
-        svg.call(tip);
+    // Call on events
+    circle
+        .on("mouseover", tip.show)
+        .on("mouseout", tip.hide);
 
-        // Data-bind
-        var circle = svg.selectAll("circle")
-            .data(filteredData);
+    // Call the relevant axes
+    xAxisGroup.transition().duration(800).call(xAxis);
+    yAxisGroup.transition().duration(800).call(yAxis);
 
-        // Enter/Append circles
-        circle.enter()
-            .append("circle")
-            .attr("class", "circles")
-            .attr("r", 4);
-
-        // Update
-        circle
-            .transition().duration(800)
-            .attr("cx", function(d){
-                return xScale(d.year);
-            })
-            .attr("cy", function(d){
-                return yScale(d.emission);
-            });
-
-        // Call on events
-        circle
-            .on("mouseover", tip.show)
-            .on("mouseout", tip.hide);
-
-        // Call the relevant axes
-        xAxisGroup.transition().duration(800).call(xAxis);
-        yAxisGroup.transition().duration(800).call(yAxis);
-
-        // Remove irrelevant selection
-        circle.exit()
-            .remove();
-    });
-}
+    // Remove irrelevant selection
+    circle.exit()
+        .remove();
+});
