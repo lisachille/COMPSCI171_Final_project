@@ -12,25 +12,25 @@ function createpie(){
             "title": {
                 "text": title + " " + year,
                 "fontSize": 24,
-                "font": "open sans"
+                "font": "Lato"
             },
             "subtitle": {
-                "text": "Breakdown by Source: Fossil fuel energy consumption, Renewable energy consumption, and Alternative and nuclear energy.",
+                "text": "Fossil Fuel, Renewable Energy, and Alternative & Nuclear Energy Consumption.",
                 "color": "#999999",
                 "fontSize": 12,
-                "font": "open sans"
+                "font": "Lato"
             },
             "titleSubtitlePadding": 9
         },
         "footer": {
             "color": "#999999",
             "fontSize": 10,
-            "font": "open sans",
+            "font": "Lato",
             "location": "bottom-left"
         },
         "size": {
-            "canvasWidth": 750,
-            "pieOuterRadius": "86%"
+            "canvasWidth": 485,
+            "pieOuterRadius": "50%"
         },
         "data": {
             "sortOrder": "value-desc",
