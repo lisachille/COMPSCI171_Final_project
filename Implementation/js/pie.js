@@ -1,101 +1,21 @@
-<<<<<<< HEAD
-title = "Energy Breakdown";
-console.log(title);
-
-var pie = new d3pie("pieChart", {
-    "header": {
-        "title": {
-            "text": title,
-            "fontSize": 24,
-            "font": "open sans"
-        },
-        "subtitle": {
-            "text": "Fossil fuel energy consumption, Renewable energy consumption, Alternative and nuclear energy",
-            "color": "#999999",
-            "fontSize": 12,
-            "font": "open sans"
-        },
-        "titleSubtitlePadding": 9
-    },
-    "footer": {
-        "color": "#999999",
-        "fontSize": 10,
-        "font": "open sans",
-        "location": "bottom-left"
-    },
-    "size": {
-        "canvasWidth": 590,
-        "pieOuterRadius": "90%"
-    },
-    "data": {
-        "sortOrder": "value-desc",
-        "content": [
-            {
-                "label": "Carbon",
-                "value": 56,
-                "color": "#2484c1"
-            },
-            {
-                "label": "Other",
-                "value": 44,
-                "color": "#0c6197"
-            }
-        ]
-    },
-    "labels": {
-        "outer": {
-            "pieDistance": 32
-        },
-        "inner": {
-            "hideWhenLessThanPercentage": 3
-        },
-        "mainLabel": {
-            "fontSize": 11
-        },
-        "percentage": {
-            "color": "#ffffff",
-            "decimalPlaces": 0
-        },
-        "value": {
-            "color": "#adadad",
-            "fontSize": 11
-        },
-        "lines": {
-            "enabled": true
-        },
-        "truncation": {
-            "enabled": true
-        }
-    },
-    "effects": {
-        "pullOutSegmentOnClick": {
-            "effect": "linear",
-            "speed": 400,
-            "size": 8
-        }
-    },
-    "misc": {
-        "gradient": {
-            "enabled": true,
-            "percentage": 100
-        }
-    }
-});
-=======
 
 // initial title, create for first time
-title = "Energy Breakdown";
+title = "Please Click on a Country";
+bioval = 10;
+nucval = 10;
+fuelval = 10;
+otherval = 10;
 createpie();
 function createpie(){
     pie = new d3pie("pieChart", {
         "header": {
             "title": {
-                "text": title,
+                "text": title + " " + year,
                 "fontSize": 24,
                 "font": "open sans"
             },
             "subtitle": {
-                "text": "Fossil fuel energy consumption, Renewable energy consumption, Alternative and nuclear energy",
+                "text": "Breakdown by Source: Fossil fuel energy consumption, Renewable energy consumption, and Alternative and nuclear energy.",
                 "color": "#999999",
                 "fontSize": 12,
                 "font": "open sans"
@@ -109,21 +29,31 @@ function createpie(){
             "location": "bottom-left"
         },
         "size": {
-            "canvasWidth": 590,
-            "pieOuterRadius": "90%"
+            "canvasWidth": 750,
+            "pieOuterRadius": "86%"
         },
         "data": {
             "sortOrder": "value-desc",
             "content": [
                 {
-                    "label": "Carbon",
-                    "value": 56,
-                    "color": "#2484c1"
+                    "label": "Alternative/Nuclear energy",
+                    "value": nucval,
+                    "color": "#5c97d4"
+                },
+                {
+                    "label": "Fossil Fuels",
+                    "value": fuelval,
+                    "color": "#a05c56"
+                },
+                {
+                    "label": "Biomass",
+                    "value": bioval,
+                    "color": "#95cd5a"
                 },
                 {
                     "label": "Other",
-                    "value": 44,
-                    "color": "#0c6197"
+                    "value": otherval,
+                    "color": "#e98125"
                 }
             ]
         },
@@ -155,7 +85,7 @@ function createpie(){
         "effects": {
             "pullOutSegmentOnClick": {
                 "effect": "linear",
-                "speed": 400,
+                "speed": 300,
                 "size": 8
             }
         },
@@ -168,4 +98,3 @@ function createpie(){
     });
     return pie;
 }
->>>>>>> 564f978766f59732b3fb799dc39ddf3f7cc50aec

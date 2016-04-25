@@ -98,8 +98,8 @@ function loadData() {
         DATA.forEach(function(d){
             filteredData.push({year: d.year, emission: d.values[4].emission})
         });
-        console.log(DATA);
-        console.log(filteredData);
+        //console.log(DATA);
+        //console.log(filteredData);
 
         // Update the domain for the scales
         xScale.domain(d3.extent(filteredData,function(d){
