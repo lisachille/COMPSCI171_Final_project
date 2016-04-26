@@ -21,14 +21,14 @@ var svg = d3.select("#line-area").append("svg")
 var formatDate = d3.time.format("%Y");
 
 // Initialise scales
-var xScale = d3.time.scale()
+var xScaleline = d3.time.scale()
     .range([0,width]);
 var yScale = d3.scale.linear()
     .range([height, 0]);
 
 // Initialise axes
-var xAxis = d3.svg.axis()
-    .scale(xScale)
+var xAxisline = d3.svg.axis()
+    .scale(xScaleline)
     .orient("bottom")
     .tickFormat(formatDate);
 var yAxis = d3.svg.axis()
@@ -88,7 +88,7 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
     });
 
 // Update the domain for the scales
-    xScale.domain(d3.extent(filteredData,function(d){
+    xScaleline.domain(d3.extent(filteredData,function(d){
         return d.year;
     }));
     yScale.domain(d3.extent(filteredData,function(d){
@@ -97,7 +97,7 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
 
     // Define line function
     var line = d3.svg.line()
-        .x(function(d) { return xScale(d.year); })
+        .x(function(d) { return xScaleline(d.year); })
         .y(function(d) { return yScale(d.emission); })
         .interpolate("linear");
 
@@ -127,7 +127,7 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
     circle
         .transition().duration(800)
         .attr("cx", function(d){
-            return xScale(d.year);
+            return xScaleline(d.year);
         })
         .attr("cy", function(d){
             return yScale(d.emission);
@@ -139,7 +139,7 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
         .on("mouseout", tip.hide);
 
     // Call the relevant axes
-    xAxisGroup.transition().duration(800).call(xAxis);
+    xAxisGroup.transition().duration(800).call(xAxisline);
     yAxisGroup.transition().duration(800).call(yAxis);
 
     // Remove irrelevant selection

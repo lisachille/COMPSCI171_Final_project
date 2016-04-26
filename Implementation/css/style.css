@@ -4818,7 +4818,7 @@ footer p {
 }
 .line-annual {
     fill: none;
-    stroke: steelblue;
+    stroke: #ed8b56;
     stroke-width: 1.5px;
 }
 
@@ -4899,9 +4899,7 @@ select{
   text-anchor: middle;
   font-weight: 100;
 }
-.axis-annual{
-    stroke: steelblue;
-}
-.axis-years{
-    stroke: #ff5733;
+
+.first{
+  padding-top: 30px;
 }

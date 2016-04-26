@@ -476,7 +476,7 @@ function showEdition(d) {
         d3.select("#emissions").html("Data N/A");
     }
     else{
-        d3.select("#emissions").html(d.properties[year + "c02"]);
+        d3.select("#emissions").html(d.properties[year + "c02"].toFixed(0) + " t/capita");
     }
     if(isNaN(d.properties[year + "gdp"])){
         d3.select("#gdp").html("Data N/A");
@@ -488,13 +488,13 @@ function showEdition(d) {
         d3.select("#epc").html("Data N/A");
     }
     else{
-        d3.select("#epc").html(commaSeparateNumber("$" + d.properties[year + "energy"].toFixed(0)));
+        d3.select("#epc").html(commaSeparateNumber(d.properties[year + "energy"].toFixed(0)) + " kWh/capita");
     }
     if(isNaN(d.properties[year + "pop"])){
         d3.select("#pop").html("Data N/A");
     }
     else{
-        d3.select("#pop").html(commaSeparateNumber("$" + d.properties[year + "pop"].toFixed(0)));
+        d3.select("#pop").html(commaSeparateNumber(d.properties[year + "pop"].toFixed(0)));
     }
 }
 
