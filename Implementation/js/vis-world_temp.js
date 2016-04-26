@@ -47,9 +47,6 @@ var xAxis = d3.svg.axis()
 var yAxis_Annual = d3.svg.axis()
     .scale(yScale_Annual)
     .orient("left");
-var yAxis_Five_year = d3.svg.axis()
-    .scale(yScale_Annual)
-    .orient("right");
 
 // Label the x-axis
 svg.append("text")
@@ -62,9 +59,6 @@ var xAxisGroup = svg.append("g")
     .attr("transform", "translate(0," + height+ ")");
 var yAxisGroup_Annual = svg.append("g")
     .attr("class", "y-axis axis");
-var yAxisGroup_Five_year = svg.append("g")
-    .attr("class", "y-axis axis")
-    .attr("transform", "translate(" + width + " ,0)");
 
 // Define line functions
 var line_Annual = d3.svg.line()
@@ -86,9 +80,11 @@ var lineGroup_Five_Year = svg.append("g")
 
 // Define a y-axis label
 var axisLabel = svg.append("text")
-    .attr("x", padding)
-    .attr("y", padding - margin.top)
-    .attr("text-anchor", "middle");
+    .attr("x", padding - 220)
+    .attr("y", padding - margin.top - 20)
+    .attr("text-anchor", "middle")
+    .attr("transform", "rotate(270)")
+    .attr("font-weight", "100");
 
 // Initialize data
 loadData();
@@ -192,31 +188,12 @@ function updateVisualization() {
 
     // Call the relevant axes
     xAxisGroup.transition().duration(800).call(xAxis);
-    yAxisGroup_Five_year.transition().duration(800)
-        .style("fill", "red")
-        .call(yAxis_Five_year);
     yAxisGroup_Annual.transition().duration(800).call(yAxis_Annual);
 
     // Append a y-axis label
-    /*axisLabel.text(function() {
-        switch (selectedValue) {
-            case "GOALS":
-                return "Goals";
-                break;
-            case "AVERAGE_GOALS":
-                return "Average goals";
-                break;
-            case "MATCHES":
-                return "Matches";
-                break;
-            case "TEAMS":
-                return "Teams";
-                break;
-            case "AVERAGE_ATTENDANCE":
-                return "Average attendance";
-                break;
-        }
-    });*/
+    axisLabel.text(function() {
+        return "Temperature Anormality (C)";
+    });
 
     // Remove irrelevant selection
     /*circle.exit()
