@@ -72,6 +72,7 @@ BarChart.prototype.UpdateVis = function() {
 
     vis.svg.append("g")
         .attr("class", "y axis")
+
         .call(vis.yAxis)
         .append("text")
         .attr("transform", "rotate(-90)")
