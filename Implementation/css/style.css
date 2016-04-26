@@ -4794,6 +4794,9 @@ footer p {
 
 .bar {
     fill: steelblue;
+.transition()
+.duration(300)
+.
 }
 
 .bar:hover {
@@ -4813,7 +4816,6 @@ footer p {
 .x.axis path {
     display: none;
 }
-
 .line-annual {
     fill: none;
     stroke: steelblue;
@@ -4822,19 +4824,20 @@ footer p {
 
 .line-years {
     fill: none;
-    stroke: pink;
+    stroke: #ff5733;
     stroke-width: 1.5px;
 }
 
 .line {
     fill: none;
-    stroke: pink;
+    stroke: gray;
     stroke-width: 1.5px;
 }
 
-.circles{
-    stroke: #1C9A3D;
-    fill: white;
+.circles {
+  stroke: #1C9A3D;
+  fill: white;
+}
 
 .axislider {
     font: 10px sans-serif;
