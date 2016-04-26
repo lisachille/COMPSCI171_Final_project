@@ -4816,9 +4816,6 @@ footer p {
 .x.axis path {
     display: none;
 }
-
-<<<<<<< HEAD
-=======
 .line-annual {
     fill: none;
     stroke: steelblue;
@@ -4842,7 +4839,6 @@ footer p {
   fill: white;
 }
 
->>>>>>> f7fb7760163f241ccc7015f8e05b3924ad7db63f
 .axislider {
     font: 10px sans-serif;
     -webkit-user-select: none;
@@ -4871,8 +4867,6 @@ footer p {
     stroke-opacity: .5;
     stroke-width: 1.25px;
     cursor: crosshair;
-<<<<<<< HEAD
-=======
 }
 .background {
     fill: none;
@@ -4891,5 +4885,4 @@ footer p {
 select{
   width: 100px;
   text-overflow: ellipsis;
->>>>>>> f7fb7760163f241ccc7015f8e05b3924ad7db63f
 }

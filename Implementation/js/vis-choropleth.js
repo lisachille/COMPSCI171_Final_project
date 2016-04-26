@@ -18,7 +18,8 @@ var width = 900,
 
 var svgmap = d3.select("#map-area").append("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .attr("id", "svgmapyo");
 
 // path and projection
 var projection = d3.geo.equirectangular();
@@ -294,8 +295,8 @@ function updateChoropleth() {
     g.call(tipmap);
 
     // Render Legend, make it so that it has a white box over the map
-    var svg = d3.select("svg");
-    svg
+    var svglegend = d3.select("#svgmapyo");
+    svglegend
         .append("rect")
         .attr("width", 109)
         .attr("height", 180)
@@ -303,7 +304,7 @@ function updateChoropleth() {
         .style("fill", "white")
         .style("stroke-width", 1)
         .attr("transform", "translate(15,15)");
-    svg
+    svglegend
         .append("g")
         .attr("class", "legend")
         .attr("transform", "translate(20,20)");
@@ -311,7 +312,7 @@ function updateChoropleth() {
     var legend = d3.legend.color()
         .scale(CurrentScale);
 
-    svg.select(".legend")
+    svglegend.select(".legend")
         .call(legend);
 }
 
@@ -368,16 +369,16 @@ function dropdown() {
             }
 
             // Change Legend
-            var svg = d3.select("svg");
+            var svglegend = d3.select("#svgmapyo");
 
-            svg
+            svglegend
                 .append("g")
                 .attr("class", "legend")
                 .attr("transform", "translate(20,20)");
             var legend = d3.legend.color()
                 .scale(CurrentScale);
 
-            svg.select(".legend")
+            svglegend.select(".legend")
                 .call(legend);
             changeAttribute();
         });
