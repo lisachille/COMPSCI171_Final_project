@@ -1,14 +1,9 @@
-
 // SVG drawing area
-
 var margin = {top: 40, right: 40, bottom: 60, left: 60};
 
 var width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom,
     padding = 20;
-
-// Drop down id
-var selectedValue;
 
 // Declare tool-tip
 var tip = d3.tip()
@@ -144,8 +139,8 @@ function updateVisualization() {
     yAxisGroup_Annual.transition().duration(800).call(yAxis_Annual);
 
     // Append a y-axis label
-    axisLabel.text(function() {
-        return "Temperature Anormality (C)";
+    axisLabel.html(function() {
+        return "Temperature Change (&deg C)";
     });
 
 }
