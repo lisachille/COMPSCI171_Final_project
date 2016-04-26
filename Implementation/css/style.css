@@ -4883,6 +4883,7 @@ select{
   width: 100px;
   text-overflow: ellipsis;
 }
+
 #table-container{
   margin-top: 170px;
   margin-left: 126px;
@@ -4890,6 +4891,12 @@ select{
 #slider{
   margin-left: -155px;
 }
-#pieChart{
+#pieChart {
   margin-top: -25px;
+}
+
+.axis-label{
+    text-anchor: middle;
+    font-weight: 100;
+
 }
