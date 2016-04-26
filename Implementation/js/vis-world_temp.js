@@ -50,6 +50,7 @@ var yAxis_Annual = d3.svg.axis()
 
 // Label the x-axis
 svg.append("text")
+    .attr("class", "axis-label")
     .attr("transform","translate(" + (width - padding) + "," + (height + margin.bottom - padding) + ")")
     .text("Year");
 
@@ -82,9 +83,8 @@ var lineGroup_Five_Year = svg.append("g")
 var axisLabel = svg.append("text")
     .attr("x", padding - 220)
     .attr("y", padding - margin.top - 20)
-    .attr("text-anchor", "middle")
-    .attr("transform", "rotate(270)")
-    .attr("font-weight", "100");
+    .attr("class", "axis-label")
+    .attr("transform", "rotate(270)");
 
 // Initialize data
 loadData();
@@ -107,7 +107,6 @@ function loadData() {
 
         // Store csv data in global variable
         data = csv;
-        console.log(data);
 
         // Draw the visualization for the first time
         updateVisualization();
@@ -116,27 +115,6 @@ function loadData() {
 
 // Render visualization
 function updateVisualization() {
-
-    /*// Get the value selected by the user
-    selectedValue = d3.select("#data-type").property("value");
-
-    // Years selected
-    var min_year = formatDate.parse(d3.select("#min-year").property("value").toString());
-    var max_year = formatDate.parse(d3.select("#max-year").property("value").toString());
-
-    var filteredData;
-    /!* Filter data within the range
-     * I recognise that a better transition for this would be the zoom
-     * transition but I could not do it *!/
-    if (min_year != null && max_year != null){
-        filteredData = data.filter(function(d){
-            return (min_year <= d.YEAR && d.YEAR <= max_year);
-        })
-    }
-    else filteredData = data;*/
-
-    // Call the tool-tip
-    //svg.call(tip);
 
     // Filtering out the values of 0 for filtered data since those result
     // from empty slots in our data
@@ -161,31 +139,6 @@ function updateVisualization() {
     lineGroup_Five_Year.transition().duration(800)
         .attr("d", line_Five_Year(filteredData));
 
-    /*// Data-bind
-    var circle = svg.selectAll("circle")
-        .data(data);
-
-    // Enter/Append circles
-    circle.enter()
-        .append("circle")
-        .attr("class", "circles")
-        .attr("r", 4);
-
-    // Update
-    circle
-        .transition().duration(800)
-        .attr("cx", function(d){
-            return xScale(d.Year);
-        })
-        .attr("cy", function(d){
-            return yScale(d.Annual_Mean);
-        });
-
-    // Call on events
-    circle
-        .on("mouseover", tip.show)
-        .on("mouseout", tip.hide);*/
-
     // Call the relevant axes
     xAxisGroup.transition().duration(800).call(xAxis);
     yAxisGroup_Annual.transition().duration(800).call(yAxis_Annual);
@@ -195,7 +148,4 @@ function updateVisualization() {
         return "Temperature Anormality (C)";
     });
 
-    // Remove irrelevant selection
-    /*circle.exit()
-        .remove();*/
 }
