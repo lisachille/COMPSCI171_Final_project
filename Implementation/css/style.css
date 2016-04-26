@@ -4890,3 +4890,9 @@ select{
     text-anchor: middle;
     font-weight: 100;
 }
+.axis-annual{
+    stroke: steelblue;
+}
+.axis-years{
+    stroke: #ff5733;
+}
