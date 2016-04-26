@@ -4879,14 +4879,24 @@ footer p {
 #map-area{
   margin-top: 20px;
 }
-#pieChart{
-  margin-top: 165px;
-}
 select{
   width: 100px;
   text-overflow: ellipsis;
 }
+
+#table-container{
+  margin-top: 170px;
+  margin-left: 126px;
+}
+#slider{
+  margin-left: -155px;
+}
+#pieChart {
+  margin-top: -25px;
+}
+
 .axis-label{
     text-anchor: middle;
     font-weight: 100;
+
 }
