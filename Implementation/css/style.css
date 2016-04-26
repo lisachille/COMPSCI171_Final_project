@@ -4824,13 +4824,13 @@ footer p {
 
 .line-years {
     fill: none;
-    stroke: pink;
+    stroke: #ff5733;
     stroke-width: 1.5px;
 }
 
 .line {
     fill: none;
-    stroke: pink;
+    stroke: gray;
     stroke-width: 1.5px;
 }
 
