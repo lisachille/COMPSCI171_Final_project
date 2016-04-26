@@ -10,13 +10,12 @@ function createpie(){
     pie = new d3pie("pieChart", {
         "header": {
             "title": {
-                "text": title + " " + year,
+                "text":"Energy Breakdown",
                 "fontSize": 24,
                 "font": "Lato"
             },
             "subtitle": {
                 "text": "Fossil Fuel, Renewable Energy, and Alternative & Nuclear Energy Consumption.",
-                "color": "#999999",
                 "fontSize": 12,
                 "font": "Lato"
             },
@@ -29,14 +28,14 @@ function createpie(){
             "location": "bottom-left"
         },
         "size": {
-            "canvasWidth": 485,
+            "canvasWidth": 430,
             "pieOuterRadius": "50%"
         },
         "data": {
             "sortOrder": "value-desc",
             "content": [
                 {
-                    "label": "Alternative/Nuclear energy",
+                    "label": "Alternative/Nuclear",
                     "value": nucval,
                     "color": "#5c97d4"
                 },
