@@ -42,6 +42,9 @@ var xAxis = d3.svg.axis()
 var yAxis_Annual = d3.svg.axis()
     .scale(yScale_Annual)
     .orient("left");
+var yAxis_Five_Year = d3.svg.axis()
+    .scale(yScale_Five_year)
+    .orient("right");
 
 // Label the x-axis
 svg.append("text")
@@ -52,9 +55,12 @@ svg.append("text")
 // Declare axes groups
 var xAxisGroup = svg.append("g")
     .attr("class", "x-axis axis")
-    .attr("transform", "translate(0," + height+ ")");
+    .attr("transform", "translate(0," + height + ")");
 var yAxisGroup_Annual = svg.append("g")
-    .attr("class", "y-axis axis");
+    .attr("class", "y-axis axis axis-annual");
+var yAxisGroup_Five_Year = svg.append("g")
+    .attr("transform", "translate(" + width + ", 0)")
+    .attr("class", "y-axis axis axis-years");
 
 // Define line functions
 var line_Annual = d3.svg.line()
@@ -75,11 +81,16 @@ var lineGroup_Five_Year = svg.append("g")
     .attr("class", "line-years");
 
 // Define a y-axis label
-var axisLabel = svg.append("text")
+var axisLabel_left = svg.append("text")
     .attr("x", padding - 220)
     .attr("y", padding - margin.top - 20)
     .attr("class", "axis-label")
     .attr("transform", "rotate(270)");
+var axisLabel_right = svg.append("text")
+    .attr("x", width - padding)
+    .attr("y", padding - margin.top - 20)
+    .attr("class", "axis-label")
+    .attr("transform", "rotate(90)");
 
 // Initialize data
 loadData();
@@ -137,10 +148,14 @@ function updateVisualization() {
     // Call the relevant axes
     xAxisGroup.transition().duration(800).call(xAxis);
     yAxisGroup_Annual.transition().duration(800).call(yAxis_Annual);
+    yAxisGroup_Five_Year.transition().duration(800).call(yAxis_Five_Year);
 
     // Append a y-axis label
-    axisLabel.html(function() {
-        return "Temperature Change (&deg C)";
+    axisLabel_left.html(function() {
+        return "Annual Temperature Change (&deg C)";
+    });
+    axisLabel_right.html(function() {
+        return "5-year Temperature Change (&deg C)";
     });
 
 }

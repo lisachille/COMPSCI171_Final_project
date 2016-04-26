@@ -4895,8 +4895,13 @@ select{
   margin-top: -25px;
 }
 
-.axis-label{
-    text-anchor: middle;
-    font-weight: 100;
-
+.axis-label {
+  text-anchor: middle;
+  font-weight: 100;
+}
+.axis-annual{
+    stroke: steelblue;
+}
+.axis-years{
+    stroke: #ff5733;
 }
