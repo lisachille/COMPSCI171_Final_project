@@ -462,10 +462,40 @@ function clicked(d) {
         otherval = 100.2 - bioval - nucval - fuelval;
     }
 
+    showEdition(d);
     // update pie
     pie.destroy();
     createpie();
 }
 
+function showEdition(d) {
+    d3.select("#table-container").style('display', null);
+    d3.select("#countryname").html(d.properties.name);
+    d3.select("#year").html(year);
+    if(isNaN(d.properties[year + "c02"])){
+        d3.select("#emissions").html("Data N/A");
+    }
+    else{
+        d3.select("#emissions").html(d.properties[year + "c02"]);
+    }
+    if(isNaN(d.properties[year + "gdp"])){
+        d3.select("#gdp").html("Data N/A");
+    }
+    else{
+        d3.select("#gdp").html(commaSeparateNumber("$" + d.properties[year + "gdp"].toFixed(0)));
+    }
+    if(isNaN(d.properties[year + "energy"])){
+        d3.select("#epc").html("Data N/A");
+    }
+    else{
+        d3.select("#epc").html(commaSeparateNumber("$" + d.properties[year + "energy"].toFixed(0)));
+    }
+    if(isNaN(d.properties[year + "pop"])){
+        d3.select("#pop").html("Data N/A");
+    }
+    else{
+        d3.select("#pop").html(commaSeparateNumber("$" + d.properties[year + "pop"].toFixed(0)));
+    }
+}
 
 

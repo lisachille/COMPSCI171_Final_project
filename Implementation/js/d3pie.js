@@ -173,7 +173,7 @@
             },
             pieCenterOffset: {
                 x: 0,
-                y: 0
+                y: -65
             },
             cssPrefix: null
         },
