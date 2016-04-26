@@ -28,7 +28,7 @@ var svg = d3.select("#line-area").append("svg")
 // Date parser (https://github.com/mbostock/d3/wiki/Time-Formatting)
 var formatDate = d3.time.format("%Y");
 
-// FIFA world cup
+// Data
 var data;
 
 // Initialise scales

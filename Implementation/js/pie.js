@@ -15,11 +15,7 @@ function createpie(){
                 "font": "Lato"
             },
             "subtitle": {
-<<<<<<< HEAD
-                "text": "Breakdown by Source: Fossil fuel energy consumption, Renewable energy consumption, and Alternative and nuclear energy.",
-=======
                 "text": "Fossil Fuel, Renewable Energy, and Alternative & Nuclear Energy Consumption.",
->>>>>>> f7fb7760163f241ccc7015f8e05b3924ad7db63f
                 "color": "#999999",
                 "fontSize": 12,
                 "font": "Lato"
@@ -33,13 +29,8 @@ function createpie(){
             "location": "bottom-left"
         },
         "size": {
-<<<<<<< HEAD
-            "canvasWidth": 750,
-            "pieOuterRadius": "86%"
-=======
             "canvasWidth": 485,
             "pieOuterRadius": "50%"
->>>>>>> f7fb7760163f241ccc7015f8e05b3924ad7db63f
         },
         "data": {
             "sortOrder": "value-desc",

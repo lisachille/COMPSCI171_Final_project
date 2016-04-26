@@ -110,36 +110,6 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
         return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " + d.emission.toFixed(2) + "t/capita";
     });
 
-<<<<<<< HEAD
-        // Filter data of the relevant country
-        DATA.forEach(function(d){
-            filteredData.push({year: d.year, emission: d.values[4].emission})
-        });
-        //console.log(DATA);
-        //console.log(filteredData);
-
-        // Update the domain for the scales
-        xScale.domain(d3.extent(filteredData,function(d){
-            return d.year;
-        }));
-        yScale.domain(d3.extent(filteredData,function(d){
-            return d.emission;
-        }));
-
-        // Define line function
-        var line = d3.svg.line()
-            .x(function(d) { return xScale(d.year); })
-            .y(function(d) { return yScale(d.emission); })
-            .interpolate("linear");
-
-        // Append path to line group
-        lineGroup.transition().duration(800)
-            .attr("d", line(filteredData))
-        ;
-
-        tip.html(function(d){
-            return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " + d.emission.toFixed(2) + "t/capita";
-=======
     // Call the tool-tip
     svg.call(tip);
 
@@ -161,7 +131,6 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
         })
         .attr("cy", function(d){
             return yScale(d.emission);
->>>>>>> f7fb7760163f241ccc7015f8e05b3924ad7db63f
         });
 
     // Call on events
