@@ -2,6 +2,7 @@
  * Created by snowby98 on 4/23/16.
  */
 
+
 var BarChart = function(_parentElement, _data) {
 
     var vis =this;
@@ -11,6 +12,7 @@ var BarChart = function(_parentElement, _data) {
     vis.margin = {top: 30, right: 20, bottom: 30, left: 40},
         vis.width = 860 - vis.margin.left - vis.margin.right,
         vis.height = 400 - vis.margin.top - vis.margin.bottom;
+        vis.padding = 10;
 //initialize scales
 
      vis.x = d3.scale.ordinal()
@@ -24,6 +26,7 @@ var BarChart = function(_parentElement, _data) {
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom");
+
 
 
     vis.yAxis = d3.svg.axis()
@@ -63,7 +66,7 @@ BarChart.prototype.UpdateVis = function() {
 
     vis.svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + vis.height + ")")
+        .attr("transform", "translate(7," + vis.height + ")")
         .call(vis.xAxis);
 
 
@@ -77,14 +80,22 @@ BarChart.prototype.UpdateVis = function() {
         .style("text-anchor", "end")
         .text("C02 Emissions");
 
+
+
+
     var rect= vis.svg.selectAll(".bar")
         .data(vis.data);
-    rect.enter().append("rect")
+    rect.enter()
+
+        .append("rect")
         .style("fill", "steelblue")
         .attr("class", "bar");
 
-        rect.attr("x", function (d) {
-            return vis.x(d.Code);
+
+        rect.transition()
+        .duration(900)
+        .attr("x", function (d) {
+        return vis.x(d.Code);
         })
         .attr("width", vis.x.rangeBand())
         .attr("y", function (d) {
@@ -95,6 +106,10 @@ BarChart.prototype.UpdateVis = function() {
         });
 
     rect.exit().remove();
+
+
+
+
 
 };
 //derived from Mike Bostock's https://bl.ocks.org/mbostock/3943967 Tutorial

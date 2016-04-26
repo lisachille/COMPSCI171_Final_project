@@ -49,6 +49,7 @@ var myBar;
 
             BIGC02DATA = C02DataCsv;
             BIGENERGYDATA = energyDataCsv;
+
             //SC02= C02DATA.sort (function(d){ return d3.ascending(d[2011])});
             //console.log(SC02);
             //Senergy= ENERGYDATA.sort;

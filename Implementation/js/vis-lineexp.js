@@ -125,7 +125,7 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
 
     // Update
     circle
-        .transition().duration(800)
+        .transition().duration(500)
         .attr("cx", function(d){
             return xScale(d.year);
         })
@@ -144,5 +144,9 @@ d3.json("data/CO2emissions2.json", function(error, DATA) {
 
     // Remove irrelevant selection
     circle.exit()
-        .remove();
+        .transition()
+        .duration(500)
+        .height(0)
+        .remove()
+        ;
 });
