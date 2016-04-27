@@ -341,7 +341,7 @@ function updateChoropleth() {
         .attr("class", "countries")
         .style("fill", function(d) { return choropleth(d, recolorMap)})
         .style("stroke", "#000")
-        .style("stroke-width", ".5px")
+        .style("stroke-width", ".2px")
         .on('mouseover', tipmap.show).on('mouseout', tipmap.hide).on("click", clicked);
     g.call(tipmap);
 
