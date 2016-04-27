@@ -405,7 +405,7 @@ function dropdown() {
     // add elements
     var dropdown = d3.select("#select")
         .append("div")
-        .html("<h3>Select Data</h3>")
+        .html("<h4>Select Data</h4>")
         .append("select")
         .attr("class", "form-control")
         .on("change", function() {
@@ -490,19 +490,6 @@ function zoomed() {
 function clicked(d) {
     // store clicked info in global variable
     clickedcountry = d;
-    var centroid = path.centroid(d),
-        translate = projection.translate();
-
-    projection.translate([
-        translate[0] - centroid[0] + 960 / 2,
-        translate[1] - centroid[1] + 500 / 2
-    ]);
-
-    zoom.translate(projection.translate());
-
-    g.selectAll("path").transition()
-        .duration(700)
-        .attr("d", path);
 
     // name of clicked country
     name = d.properties.name;

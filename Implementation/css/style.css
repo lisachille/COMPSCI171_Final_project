@@ -4886,7 +4886,7 @@ select{
 }
 
 #table-container{
-  margin-top: 170px;
+  margin-top: 65px;
   margin-left: 126px;
 }
 #slider{
@@ -4903,4 +4903,7 @@ select{
 
 .first{
   padding-top: 30px;
+}
+.movedown{
+  margin-top: 80px;
 }

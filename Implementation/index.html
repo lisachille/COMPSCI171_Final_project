@@ -204,11 +204,11 @@
     <div class="content-section-b" id = "visualizaiton">
 
 		<div class="container">
-            <div class="row">
+			<h3 class = "text-center">Global C02 Emissions, Electricity Consumption, and GDP</h3>
+			<div class = "text-center">Click on a country to find out more information, move the slider below to change the year <br> (scroll to zoom, click and drag to reposition map).</div>
+            <div class="row movedown">
                 <div class="col-sm-8 wow fadeInLeftBig">
                      <div class="container map">
-        				<h3>Global C02 Emissions, Electricity Consumption, and GDP</h3>
-        				<div>(scroll to zoom, click on Country to center, click and drag to reposition map.)</div>
         					<span id = "select" ></span>
         				<div class="col-md-6"  id="map-area"></div>
         			</div>
@@ -270,10 +270,6 @@
 			</div>
 
 			<div class="col-md-8 wow fadeInRightBig" id = "line-area">
-				<select class="form-control" id="data-type" onchange="loadData()">
-					<option value="GDP">GDP</option>
-					<option value="energy-consumption">Electricity consumption</option>
-				</select>
 			</div>
 		</div>
 
