@@ -1,21 +1,41 @@
 
 // initial title, create for first time
-title = "Please Click on a Country";
-bioval = 10;
-nucval = 10;
-fuelval = 10;
-otherval = 10;
+title = "Energy Breakdown";
 createpie();
 function createpie(){
+    if (clickedcountry == null){
+        bioval = 10;
+        nucval = 10;
+        fuelval = 10;
+        otherval = 10;
+    }
+    else {
+        if (clickedcountry.properties[year + "bio"] == null || isNaN(clickedcountry.properties[year + "bio"]) || isNaN(nucval = clickedcountry.properties[year + "nuclear"]) || isNaN(fuelval = clickedcountry.properties[year + "fuels"]))
+        {
+            bioval = 0;
+            nucval = 0;
+            fuelval = 0;
+            otherval = 0;
+            title = "Data N/A";
+        }
+        else
+        {
+            bioval = clickedcountry.properties[year + "bio"];
+            nucval = clickedcountry.properties[year + "nuclear"];
+            fuelval = clickedcountry.properties[year + "fuels"];
+            otherval = 100.2 - bioval - nucval - fuelval;
+            title = "Energy Breakdown";
+        }
+    }
     pie = new d3pie("pieChart", {
         "header": {
             "title": {
-                "text":"Energy Breakdown",
+                "text":title,
                 "fontSize": 24,
                 "font": "Lato"
             },
             "subtitle": {
-                "text": "Fossil Fuel, Renewable Energy, and Alternative & Nuclear Energy Consumption.",
+                "text": "Fossil Fuel, Renewable Energy, and Alternative & Nuclear Energy Consumption",
                 "fontSize": 12,
                 "font": "Lato"
             },

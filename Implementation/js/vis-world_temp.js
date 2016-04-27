@@ -116,7 +116,6 @@ function updateVisualization() {
     var filteredData = data.filter(function(d){
         return (data.Annual_mean != 0);
     });
-    console.log(data);
 
     // Update the domain for the scales
     xScale.domain(d3.extent(data,function(d){

@@ -4775,8 +4775,9 @@ footer p {
 	}
   .factory {
     position: relative;
-    top: 65px;
-    border-radius: 25px;
+    top: 150px;
+    border-radius: 50px;
+    left: 30px;
   }
   .link {
     fill: none;

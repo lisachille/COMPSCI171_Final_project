@@ -1,18 +1,73 @@
 // inspiration from http://www.cartographicperspectives.org/index.php/journal/article/view/cp78-sack-et-al/1359
 // http://bl.ocks.org/mbostock/2206340
 
-// starting year
-year = 2013;
+// starting values global for linking
+var name;
+var year = 2010;
+var clickedcountry;
+window.world;
+selecteddatamap = "c02";
 
-// make slider (http://sujeetsr.github.io/d3.slider/)
-// tick formatter
-var formatter = d3.format(".0f");
-var tickFormatter = function(d) {
-    return formatter(d);
-};
+loadmapdata();
+
+// make slider (https://bl.ocks.org/mbostock/6452972)
+var marginbrush = {top: 10, right: 50, bottom: 10, left: 50},
+    widthbrush = 960 - marginbrush.left - marginbrush.right,
+    heightbrush = 50 - marginbrush.bottom - marginbrush.top;
+
+var x = d3.scale.linear()
+    .domain([1960, 2015])
+    .range([0, widthbrush])
+    .clamp(true);
+
+var brush = d3.svg.brush()
+    .x(x)
+    .extent([2010, 2010])
+    .on("brush", brushed);
+
+var svgslider = d3.select("#slider").append("svg")
+    .attr("width", widthbrush + marginbrush.left + marginbrush.right)
+    .attr("height", heightbrush + marginbrush.top + marginbrush.bottom)
+    .append("g")
+    .attr("transform", "translate(" + marginbrush.left + "," + marginbrush.top + ")");
+
+svgslider.append("g")
+    .attr("class", "x axislider")
+    .attr("transform", "translate(0," + heightbrush / 2 + ")")
+    .call(d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .tickFormat(function(d) { return d; })
+        .tickSize(0)
+        .tickPadding(12))
+    .select(".domain")
+    .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "halo");
+
+var slider = svgslider.append("g")
+    .attr("class", "slider")
+    .call(brush);
+
+slider.selectAll(".extent,.resize")
+    .remove();
+
+slider.select(".background")
+    .attr("height", heightbrush);
+
+var handle = slider.append("circle")
+    .attr("class", "handle")
+    .attr("transform", "translate(0," + heightbrush / 2 + ")")
+    .attr("r", 9);
+
+slider
+    .call(brush.event)
+    .transition()
+    .duration(750)
+    .call(brush.extent([2010, 2010]))
+    .call(brush.event);
 
 
-// --> CREATE SVG DRAWING AREA
+// --> CREATE SVG MAP DRAWING AREA
 var width = 900,
     height = 500;
 
@@ -44,6 +99,7 @@ g.append("rect")
 
 // used to join datasets later
 var keyArray = [year + "c02", year + "gdp", year + "energy"];
+
 // which key to show (initially 0)
 var shown = keyArray[0];
 // used to join datasets later
@@ -67,6 +123,7 @@ var C02scale = d3.scale.ordinal()
     .domain(["Data N/A", "0 - 3.125", "3.125 - 6.25", "6.25 - 9.375", "9.375 - 12.5", "12.5 - 15.625", "15.625 - 18.75", "18.75 - 21.875", "21.875 - 25", "25 +"])
     .range([ "#ccc", "#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d" ]);
 var CurrentScale = C02scale;
+
 
 // tooltip
 var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
@@ -105,175 +162,169 @@ var tipmap = d3.tip().attr('class', 'd3-tip').offset([0, 0]).html(function(d) {
         "</strong> <br>" + type + ": " + val + percent;
 });
 
+function loadmapdata(){
+    // Use the Queue.js library to read multiple files
+    queue()
+        .defer(d3.json, "data/world.geo.json")
+        .defer(d3.csv, "data/CO2emissions.csv")
+        .defer(d3.csv, "data/GDP.csv")
+        .defer(d3.csv, "data/energyuse.csv")
+        .defer(d3.csv, "data/Population.csv")
+        .defer(d3.csv, "data/biomass.csv")
+        .defer(d3.csv, "data/fuels.csv")
+        .defer(d3.csv, "data/nuclear.csv")
+        .await(function(error, mapTopJson, C02DataCsv, GDPDataCsv, energyDataCsv, PopulationDataCsv, biomassDataCsv, fuelsDataCsv, nuclearDataCsv){
+            // --> PROCESS DATA
+            datasets = [C02DataCsv, GDPDataCsv, energyDataCsv, PopulationDataCsv, biomassDataCsv, fuelsDataCsv, nuclearDataCsv];
 
-// Use the Queue.js library to read multiple files
-queue()
-  .defer(d3.json, "data/world.geo.json")
-    .defer(d3.csv, "data/CO2emissions.csv")
-    .defer(d3.csv, "data/GDP.csv")
-    .defer(d3.csv, "data/energyuse.csv")
-    .defer(d3.csv, "data/Population.csv")
-    .defer(d3.csv, "data/biomass.csv")
-    .defer(d3.csv, "data/fuels.csv")
-    .defer(d3.csv, "data/nuclear.csv")
-  .await(function(error, mapTopJson, C02DataCsv, GDPDataCsv, energyDataCsv, PopulationDataCsv, biomassDataCsv, fuelsDataCsv, nuclearDataCsv){
+            for(var i = 0; i < 7; i++){
+                datasets[i].forEach(function(data){
+                    for(var j = 1960; j < 2016; j++){
+                        var jnum = j.toString();
+                        if(data[jnum] == "")
+                        {
+                            data[jnum] = "N/A";
+                        }
+                        else{
+                            data[jnum] = +data[jnum];
+                        }
+                    }
+                });
+            }
 
-      // --> PROCESS DATA
-      datasets = [C02DataCsv, GDPDataCsv, energyDataCsv, PopulationDataCsv, biomassDataCsv, fuelsDataCsv, nuclearDataCsv];
+            // world global variable
+            window.world = mapTopJson.features;
 
-      for(var i = 0; i < 7; i++){
-          datasets[i].forEach(function(data){
-              for(var j = 1960; j < 2016; j++){
-                  var jnum = j.toString();
-                  if(data[jnum] == "")
-                  {
-                      data[jnum] = "N/A";
-                  }
-                  else{
-                      data[jnum] = +data[jnum];
-                  }
-              }
-          });
-      }
+            // loop and join C02 data
+            for (var i = 0; i < C02DataCsv.length; i++){
+                // current code
+                var csvCountries = C02DataCsv[i];
+                var csvCode = csvCountries.Code;
+                for (var j = 0; j < window.world.length; j++){
 
-      // world global variable
-      world = mapTopJson.features;
+                    if (window.world[j].properties.adm0_a3_is == csvCode){
+                        for (var key in keyArrayYears){
+                            var attr = keyArrayYears[key];
+                            var val = parseFloat(csvCountries[attr]);
+                            window.world[j].properties[attr + "c02"] = val;
+                        }
+                        break;
+                    }
+                }
+            }
 
-      // vars to join datasets
-      var jsonCountries = world;
+            // loop and join GDP data
+            for (var i = 0; i < GDPDataCsv.length; i++){
+                // current code
+                var csvCountries = GDPDataCsv[i];
+                var csvCode = csvCountries.Code;
 
-      // loop and join C02 data
-      for (var i = 0; i < C02DataCsv.length; i++){
-          // current code
-          var csvCountries = C02DataCsv[i];
-          var csvCode = csvCountries.Code;
-          for (var j = 0; j < jsonCountries.length; j++){
+                for (var j = 0; j < window.world.length; j++){
+                    if (window.world[j].properties.adm0_a3_is == csvCode){
+                        for (var key in keyArrayYears){
+                            var attr = keyArrayYears[key];
+                            var val = parseFloat(csvCountries[attr]);
+                            window.world[j].properties[attr + "gdp"] = val;
+                        }
+                        break;
+                    }
+                }
+            }
 
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayYears){
-                      var attr = keyArrayYears[key];
-                      var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr + "c02"] = val;
-                  }
-                  break;
-              }
-          }
-      }
+            // loop and join Energy data
+            for (var i = 0; i < energyDataCsv.length; i++) {
+                // current code
+                var csvCountries = energyDataCsv[i];
+                var csvCode = csvCountries.Code;
 
-      // loop and join GDP data
-      for (var i = 0; i < GDPDataCsv.length; i++){
-          // current code
-          var csvCountries = GDPDataCsv[i];
-          var csvCode = csvCountries.Code;
+                for (var j = 0; j < window.world.length; j++) {
+                    if (window.world[j].properties.adm0_a3_is == csvCode) {
+                        for (var key in keyArrayYears) {
+                            var attr = keyArrayYears[key];
+                            var val = parseFloat(csvCountries[attr]);
+                            window.world[j].properties[attr + "energy"] = val;
+                        }
+                        break;
+                    }
+                }
+            }
 
-          for (var j = 0; j < jsonCountries.length; j++){
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayYears){
-                      var attr = keyArrayYears[key];
-                      var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr + "gdp"] = val;
-                  }
-                  break;
-              }
-          }
-      }
+            // loop and join Population data
+            for (var i = 0; i < PopulationDataCsv.length; i++){
+                // current code
+                var csvCountries = PopulationDataCsv[i];
+                var csvCode = csvCountries.Code;
 
-      // loop and join Energy data
-      for (var i = 0; i < energyDataCsv.length; i++) {
-          // current code
-          var csvCountries = energyDataCsv[i];
-          var csvCode = csvCountries.Code;
+                for (var j = 0; j < window.world.length; j++){
+                    if (window.world[j].properties.adm0_a3_is == csvCode){
+                        for (var key in keyArrayYears){
+                            var attr = keyArrayYears[key];
+                            var val = parseFloat(csvCountries[attr]);
+                            window.world[j].properties[attr + "pop"] = val;
+                        }
+                        break;
+                    }
+                }
+            }
+            // loop and join biomass data
+            for (var i = 0; i < biomassDataCsv.length; i++){
+                // current code
+                var csvCountries = biomassDataCsv[i];
+                var csvCode = csvCountries.Code;
 
-          for (var j = 0; j < jsonCountries.length; j++) {
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode) {
-                  for (var key in keyArrayYears) {
-                      var attr = keyArrayYears[key];
-                      var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr + "energy"] = val;
-                  }
-                  break;
-              }
-          }
-      }
+                for (var j = 0; j < window.world.length; j++){
+                    if (window.world[j].properties.adm0_a3_is == csvCode){
+                        for (var key in keyArrayYears){
+                            var attr = keyArrayYears[key];
+                            var val = parseFloat(csvCountries[attr]);
+                            window.world[j].properties[attr + "bio"] = val;
+                        }
+                        break;
+                    }
+                }
+            }
+            // loop and join fuels data
+            for (var i = 0; i < fuelsDataCsv.length; i++){
+                // current code
+                var csvCountries = fuelsDataCsv[i];
+                var csvCode = csvCountries.Code;
 
-      // loop and join Population data
-      for (var i = 0; i < PopulationDataCsv.length; i++){
-          // current code
-          var csvCountries = PopulationDataCsv[i];
-          var csvCode = csvCountries.Code;
+                for (var j = 0; j < window.world.length; j++){
+                    if (window.world[j].properties.adm0_a3_is == csvCode){
+                        for (var key in keyArrayYears){
+                            var attr = keyArrayYears[key];
+                            var val = parseFloat(csvCountries[attr]);
+                            window.world[j].properties[attr + "fuels"] = val;
+                        }
+                        break;
+                    }
+                }
+            }
+            // loop and join nuclear data
+            for (var i = 0; i < nuclearDataCsv.length; i++){
+                // current code
+                var csvCountries = nuclearDataCsv[i];
+                var csvCode = csvCountries.Code;
 
-          for (var j = 0; j < jsonCountries.length; j++){
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayYears){
-                      var attr = keyArrayYears[key];
-                      var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr + "pop"] = val;
-                  }
-                  break;
-              }
-          }
-      }
-      // loop and join biomass data
-      for (var i = 0; i < biomassDataCsv.length; i++){
-          // current code
-          var csvCountries = biomassDataCsv[i];
-          var csvCode = csvCountries.Code;
+                for (var j = 0; j < window.world.length; j++){
+                    if (window.world[j].properties.adm0_a3_is == csvCode){
+                        for (var key in keyArrayYears){
+                            var attr = keyArrayYears[key];
+                            var val = parseFloat(csvCountries[attr]);
+                            window.world[j].properties[attr + "nuclear"] = val;
+                        }
+                        break;
+                    }
+                }
+            }
+            // Create Dropdown
+            dropdown();
 
-          for (var j = 0; j < jsonCountries.length; j++){
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayYears){
-                      var attr = keyArrayYears[key];
-                      var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr + "bio"] = val;
-                  }
-                  break;
-              }
-          }
-      }
-      // loop and join fuels data
-      for (var i = 0; i < fuelsDataCsv.length; i++){
-          // current code
-          var csvCountries = fuelsDataCsv[i];
-          var csvCode = csvCountries.Code;
+            // Update choropleth
+            updateChoropleth();
 
-          for (var j = 0; j < jsonCountries.length; j++){
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayYears){
-                      var attr = keyArrayYears[key];
-                      var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr + "fuels"] = val;
-                  }
-                  break;
-              }
-          }
-      }
-      // loop and join nuclear data
-      for (var i = 0; i < nuclearDataCsv.length; i++){
-          // current code
-          var csvCountries = nuclearDataCsv[i];
-          var csvCode = csvCountries.Code;
-
-          for (var j = 0; j < jsonCountries.length; j++){
-              if (jsonCountries[j].properties.adm0_a3_is == csvCode){
-                  for (var key in keyArrayYears){
-                      var attr = keyArrayYears[key];
-                      var val = parseFloat(csvCountries[attr]);
-                      jsonCountries[j].properties[attr + "nuclear"] = val;
-                  }
-                  break;
-              }
-          }
-      }
-
-
-      world = jsonCountries;
-      console.log(world);
-      // Create Dropdown
-      dropdown();
-
-      // Update choropleth
-      updateChoropleth();
-  });
+        });
+};
 
 
 function updateChoropleth() {
@@ -314,6 +365,7 @@ function updateChoropleth() {
 
     svglegend.select(".legend")
         .call(legend);
+    ;
 }
 
 
@@ -334,13 +386,13 @@ function colorscale() {
             .domain([0, 10000])
             .range(colorbrewer.Oranges[9]);
     }
-
     return color;
 }
 
 function choropleth(d, recolorMap) {
     // value
     var value = d.properties[shown];
+
     if (value) {
         return recolorMap(value);
     }
@@ -358,14 +410,21 @@ function dropdown() {
         .attr("class", "form-control")
         .on("change", function() {
             shown = this.value;
-            if (shown == year + "c02"){
+            // just first time values
+            if (shown == "2010c02"){
                 CurrentScale = C02scale;
+                selecteddatamap = "c02";
+                shown = year + "c02";
             }
-            else if (shown == year + "gdp"){
+            else if (shown == "2010gdp"){
                 CurrentScale = GDPscale;
+                selecteddatamap = "gdp";
+                shown = year + "gdp";
             }
             else{
                 CurrentScale = Escale;
+                selecteddatamap = "epc";
+                shown = year + "energy";
             }
 
             // Change Legend
@@ -401,6 +460,7 @@ function dropdown() {
                 return "Electric Power Consumption (kWh per capita)";
             }
         });
+
 }
 
 function changeAttribute() {
@@ -408,11 +468,10 @@ function changeAttribute() {
     // recolor map
     d3.selectAll(".countries")
         .transition()
-        .duration(1000)
+        .duration(600)
         .style("fill", function(d) {
             return choropleth(d, colorscale());
         });
-
 }
 
 // http://stackoverflow.com/questions/3883342/add-commas-to-a-number-in-jquery
@@ -429,6 +488,8 @@ function zoomed() {
 }
 
 function clicked(d) {
+    // store clicked info in global variable
+    clickedcountry = d;
     var centroid = path.centroid(d),
         translate = projection.translate();
 
@@ -445,22 +506,6 @@ function clicked(d) {
 
     // name of clicked country
     name = d.properties.name;
-    title = name + " Power Consumption (by %)";
-    if (d.properties[year + "bio"] == null || isNaN(d.properties[year + "bio"]) || isNaN(nucval = d.properties[year + "nuclear"]) || isNaN(fuelval = d.properties[year + "fuels"]))
-    {
-        bioval = 0;
-        nucval = 0;
-        fuelval = 0;
-        otherval = 0;
-        title = "Data for " + name + " N/A";
-    }
-    else
-    {
-        bioval = d.properties[year + "bio"];
-        nucval = d.properties[year + "nuclear"];
-        fuelval = d.properties[year + "fuels"];
-        otherval = 100.2 - bioval - nucval - fuelval;
-    }
 
     showEdition(d);
     // update pie
@@ -476,7 +521,7 @@ function showEdition(d) {
         d3.select("#emissions").html("Data N/A");
     }
     else{
-        d3.select("#emissions").html(d.properties[year + "c02"].toFixed(0) + " t/capita");
+        d3.select("#emissions").html(d.properties[year + "c02"].toFixed(2) + " t/capita");
     }
     if(isNaN(d.properties[year + "gdp"])){
         d3.select("#gdp").html("Data N/A");
@@ -498,4 +543,53 @@ function showEdition(d) {
     }
 }
 
+
+function brushed() {
+    var value = brush.extent()[0];
+    if (d3.event.sourceEvent) { // not a programmatic event
+        value = x.invert(d3.mouse(this)[0]);
+        brush.extent([value, value]);
+    }
+
+    handle.attr("cx", x(value));
+    year = value.toFixed(0);
+
+    // error checking
+    if (window.world == null || clickedcountry == null)
+    {
+        keyArray = [year + "c02", year + "gdp", year + "energy"];
+        if (selecteddatamap == "c02"){
+            shown = keyArray[0];
+        }
+        else if (selecteddatamap == "gdp"){
+            shown = keyArray[1];
+        }
+        else if (selecteddatamap == "epc") {
+            shown = keyArray[2];
+        }
+        //update choropleth
+        changeAttribute();
+        return;
+    }
+    else{
+        keyArray = [year + "c02", year + "gdp", year + "energy"];
+        showEdition(clickedcountry);
+    }
+    if (selecteddatamap == "c02"){
+        shown = keyArray[0];
+    }
+    else if (selecteddatamap == "gdp"){
+        shown = keyArray[1];
+    }
+    else if (selecteddatamap == "epc") {
+        shown = keyArray[2];
+    }
+
+    //update choropleth
+    changeAttribute();
+
+    // update pie
+    pie.destroy();
+    createpie();
+}
 
