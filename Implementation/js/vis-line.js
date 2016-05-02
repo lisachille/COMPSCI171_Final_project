@@ -7,8 +7,9 @@ var width = 500 - margin.left - margin.right,
 
 // Form id and key initialiser
 var selectedValue = "",
-    key = 4;
+    key = -1;
 
+var data;
 
 // Declare tool-tip
 var tip = d3.tip()
@@ -40,7 +41,7 @@ var yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left");
 
-// Label the axes: x-axis
+// Label the labels: x-axis
 svg.append("text")
     .attr("transform","translate(" + (width - padding) + "," + (height + margin.bottom - padding) + ")")
     .text("Year");
@@ -65,9 +66,9 @@ var lineGroup = svg.append("g")
     .append("path")
     .attr("class", "line");
 
-loadUpdateData();
+loadData();
 
-function loadUpdateData(){
+function loadData(){
     d3.json("data/CO2emissions2.json", function(error, DATA) {
 
         // Error checking: Making sure the file loaded correctly
@@ -83,94 +84,101 @@ function loadUpdateData(){
             }
         });
 
-        var filteredData = [];
+        data = DATA;
 
-        // Initialise values for the input field
+        // Initialise a value for the input field
         $("#country-choice").val("Albania");
 
-        // Get the value selected by the user
-        selectedValue = d3.select("#country-choice").property("value");
-
-        // Get the key for the relevant country
-        key = DATA[0].values.findIndex(function(d){
-            return (d.country == selectedValue);
-        });
-
-        /*// Plot Albania's data if one inputs a non-existent country
-        if (key == -1){
-            key = 4;
-        }*/
-
-        // Filter data of the relevant country
-        DATA.forEach(function(d){
-            filteredData.push({
-                year: d.year,
-                emission: d.values[key].emission
-            })
-        });
-
-        // Filter out the data that is not available
-        filteredData = filteredData.filter(function(d){
-            return (d.emission != 0);
-        });
-
-        // Update the domain for the scales
-        xScale.domain(d3.extent(filteredData,function(d){
-            return d.year;
-        }));
-        yScale.domain(d3.extent(filteredData,function(d){
-            return d.emission;
-        }));
-
-        // Define line function
-        var line = d3.svg.line()
-            .x(function(d) { return xScale(d.year); })
-            .y(function(d) { return yScale(d.emission); })
-            .interpolate("linear");
-
-        // Append path to line group
-        lineGroup.transition().duration(800)
-            .attr("d", line(filteredData))
-        ;
-
-        tip.html(function(d){
-            return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " + d.emission.toFixed(2) + "t/capita";
-        });
-
-        // Call the tool-tip
-        svg.call(tip);
-
-        // Data-bind
-        var circle = svg.selectAll("circle")
-            .data(filteredData);
-
-        // Enter/Append circles
-        circle.enter()
-            .append("circle")
-            .attr("class", "circles")
-            .attr("r", 3.5);
-
-        // Update
-        circle
-            .transition().duration(800)
-            .attr("cx", function(d){
-                return xScale(d.year);
-            })
-            .attr("cy", function(d){
-                return yScale(d.emission);
-            });
-
-        // Call on events
-        circle
-            .on("mouseover", tip.show)
-            .on("mouseout", tip.hide);
-
-        // Call the relevant axes
-        xAxisGroup.transition().duration(800).call(xAxis);
-        yAxisGroup.transition().duration(800).call(yAxis);
-
-        // Remove irrelevant selection
-        circle.exit()
-            .remove();
-    });
+        updateData();
+    })
 }
+
+function updateData(){
+    // Get the value selected by the user
+    selectedValue = d3.select("#country-choice").property("value");
+
+    var filteredData = [];
+
+    // Get the key for the relevant country
+    key = data[0].values.findIndex(function(d){
+        return (d.country == selectedValue);
+    });
+
+    // Plot Aruba's data if one inputs a non-existent country
+    if (key == -1){
+        key = 0;
+    }
+
+    // Filter data of the relevant country
+    data.forEach(function(d){
+        filteredData.push({
+            year: d.year,
+            emission: d.values[key].emission
+        })
+    });
+
+    // Filter out the data that is not available
+    filteredData = filteredData.filter(function(d){
+        return (d.emission != 0);
+    });
+
+    // Update the domain for the scales
+    xScale.domain(d3.extent(filteredData,function(d){
+        return d.year;
+    }));
+    yScale.domain(d3.extent(filteredData,function(d){
+        return d.emission;
+    }));
+
+    // Define line function
+    var line = d3.svg.line()
+        .x(function(d) { return xScale(d.year); })
+        .y(function(d) { return yScale(d.emission); })
+        .interpolate("linear");
+
+    // Append path to line group
+    lineGroup.transition().duration(800)
+        .attr("d", line(filteredData))
+    ;
+
+    tip.html(function(d){
+        return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " + d.emission.toFixed(2) + "t/capita";
+    });
+
+    // Call the tool-tip
+    svg.call(tip);
+
+    // Data-bind
+    var circle = svg.selectAll("circle")
+        .data(filteredData);
+
+    // Enter/Append circles
+    circle.enter()
+        .append("circle")
+        .attr("class", "circles")
+        .attr("r", 3.5);
+
+    // Update
+    circle
+        .transition().duration(800)
+        .attr("cx", function(d){
+            return xScale(d.year);
+        })
+        .attr("cy", function(d){
+            return yScale(d.emission);
+        });
+
+    // Call on events
+    circle
+        .on("mouseover", tip.show)
+        .on("mouseout", tip.hide);
+
+    // Call the relevant axes
+    xAxisGroup.transition().duration(800).call(xAxis);
+    yAxisGroup.transition().duration(800).call(yAxis);
+
+    // Remove irrelevant selection
+    circle.exit()
+        .remove();
+}
+
