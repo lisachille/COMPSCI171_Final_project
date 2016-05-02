@@ -108,7 +108,8 @@ function updateVisualization(data) {
 
     // Update tooltip text
     tip.html(function(d){
-        return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " + d.emissions.toFixed(2) + "million metric tonnes";
+        return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " +
+            "" + d.emissions.toFixed(2) + " million metric tonnes";
     });
 
     // Call the tool-tip
