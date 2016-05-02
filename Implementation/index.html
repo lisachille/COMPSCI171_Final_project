@@ -107,7 +107,7 @@
 				<h2>Global Warming?</h2>
 			</div>
 
-			<div class="row col-md-12 wow fadeInDown text-center" id="line-areatemp"></div>
+			<div class="row col-md-12 wow fadeInDown text-center" id = "line-areatemp"></div>
 			<div class="row">
 
 				<div class="row col-md-12 wow fadeInDown text-center"> This graph illustrates the change in global surface temperature relative to 1951-1980 average temperatures. The 10 warmest years in the 134-year record all have occurred since 2000, with the exception of 1998. The year 2015 ranks as the warmest on record. (Source: NASA/GISS). This research is broadly consistent with similar constructions prepared by the Climatic Research Unit and the National Oceanic and Atmospheric Administration (nasa.gov). <hr> </div>
@@ -201,7 +201,7 @@
         <!-- /.container -->
     </div>
 
-    <div class="content-section-b" id="visualizaiton">
+    <div class="content-section-b" id = "visualizaiton">
 
 		<div class="container">
 			<h3 class = "text-center">Global C02 Emissions, Electricity Consumption, and GDP</h3>
@@ -246,18 +246,7 @@
 					<div class = "container" id="pieChart"></div>
 				</div>
 			</div>
-			<div class="row container-fluid">
-				<div class="col-md-6">
-					<form onsubmit="UpdateData()">
-						Country: <input type="text" name="country-choice" id="country-choice" class="country-choice">
-						<input type="submit" value="Change">
-					</form>
-					<div class="col-md-6 wow fadeInRightBig" id="line-area"></div>
-				</div>
-				<div class="col-md-6">.col-md-6</div>
-			</div>
         </div>
-
     </div>
 
     <div class="content-section-a">
@@ -278,6 +267,9 @@
 
 				</div>
 				<div id="barChart"></div>
+			</div>
+
+			<div class="col-md-8 wow fadeInRightBig" id = "line-area">
 			</div>
 		</div>
 
@@ -356,14 +348,15 @@
 		<div class="content-section-b">
 
 			<div class="container text-center" >
-				<h3>Future C02 Emissions</h3>
+				<h3>Future C02 Usage</h3>
 				<div>
-					<strong> The National Renewable Energy Laboratory has made some projections about future US C02 usage if we adopt more renewable energy technologies.  These projections look very promising!</strong>
-					<p>Since 2010, America's overall carbondioxide emissions have been declining; so much so, that the NREL has predicted that we will have gotten rid of a least 75% of the current emissions by 2050</p>
+					<strong> The National Renewable Energy Laboratory has made some projections about future US C02 usage if we adopt more renewable energy technologies.  These projections look very promising! </strong>
 				</div>
 
 				<div class="col-md-12 wow fadeInTop">
-					<div class="drowndown-group" id="future-area"></div>
+					<div class="drowndown-group">
+						New Barchart goes here!
+					</div>
 				</div>
 
 			</div>
@@ -507,7 +500,6 @@
     <script src="js/pie.js"></script>
 	<script src="js/vis-second.js"></script>
     <script src="js/vis-line.js"></script>
-	<script src="js/vis-future.js"></script>
     <script src="js/barchart.js"></script>
 </body>
 

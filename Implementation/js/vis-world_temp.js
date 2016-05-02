@@ -11,7 +11,6 @@ var svgtemp = d3.select("#line-areatemp").append("svg")
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 // add title
 svgtemp.append("text")
     .attr("x", (width / 2))
@@ -25,21 +24,21 @@ svgtemp.append("text")
 var formatDate = d3.time.format("%Y");
 
 // Data
-var worldData;
+var data;
 
 // Initialise scales
-var xScaleTemp = d3.time.scale()
+var xScale = d3.time.scale()
     .range([0,width]);
-var yScaleTemp = d3.scale.linear()
+var yScale_Annual = d3.scale.linear()
     .range([height, 0]);
 
 // Initialise axes
-var xAxisTemp = d3.svg.axis()
-    .scale(xScaleTemp)
+var xAxistemp = d3.svg.axis()
+    .scale(xScale)
     .orient("bottom")
     .tickFormat(formatDate);
-var yAxisTemp = d3.svg.axis()
-    .scale(yScaleTemp)
+var yAxis_Annual = d3.svg.axis()
+    .scale(yScale_Annual)
     .orient("left");
 
 
@@ -50,26 +49,26 @@ svgtemp.append("text")
     .text("Year");
 
 // Declare axes groups
-var xAxisGroupTemp = svgtemp.append("g")
+var xAxisGrouptemp = svgtemp.append("g")
     .attr("class", "x-axis axis")
     .attr("transform", "translate(0," + height + ")");
-var yAxisGroupTemp = svgtemp.append("g")
+var yAxisGroup_Annual = svgtemp.append("g")
     .attr("class", "y-axis axis axis-annual");
 
 
-// Define the line function
-var lineTemp = d3.svg.line()
-    .x(function(d) { return xScaleTemp(d.Year); })
-    .y(function(d) { return yScaleTemp(d.Annual_Mean); })
+// Define line functions
+var line_Annual = d3.svg.line()
+    .x(function(d) { return xScale(d.Year); })
+    .y(function(d) { return yScale_Annual(d.Annual_Mean); })
     .interpolate("linear");
 
 // Declare line groups
-var lineGroupTemp = svgtemp.append("g")
+var lineGroup_Annual = svgtemp.append("g")
     .append("path")
     .attr("class", "line-annual");
 
 // Define a y-axis label
-var axisLabelTemp = svgtemp.append("text")
+var axisLabel_left = svgtemp.append("text")
     .attr("x", padding - 220)
     .attr("y", padding - margin.top - 20)
     .attr("class", "axis-label")
@@ -94,40 +93,40 @@ function loadData() {
         });
 
         // Store csv data in global variable
-        worldData = csv;
+        data = csv;
 
         // Draw the visualization for the first time
-        updateVisualization(worldData);
+        updateVisualization();
     });
 }
 
 // Render visualization
-function updateVisualization(dataTemp){
+function updateVisualization() {
 
     // Filtering out the values of 0 for filtered data since those result
     // from empty slots in our data
-    var filteredDataTemp = dataTemp.filter(function(d){
+    var filteredData = data.filter(function(d){
         return (data.Annual_mean != 0);
     });
 
     // Update the domain for the scales
-    xScaleTemp.domain(d3.extent(dataTemp,function(d){
+    xScale.domain(d3.extent(data,function(d){
         return d.Year;
     }));
-    yScaleTemp.domain(d3.extent(dataTemp,function(d){
+    yScale_Annual.domain(d3.extent(data,function(d){
         return d.Annual_Mean;
     }));
 
     // Append path to line groups
     lineGroup_Annual.transition().duration(800)
-        .attr("d", lineTemp(filteredDataTemp));
+        .attr("d", line_Annual(data));
 
     // Call the relevant axes
-    xAxisGroupTemp.transition().duration(800).call(xAxisTemp);
-    yAxisGroupTemp.transition().duration(800).call(yAxisTemp);
+    xAxisGrouptemp.transition().duration(800).call(xAxistemp);
+    yAxisGroup_Annual.transition().duration(800).call(yAxis_Annual);
 
     // Append a y-axis label
-    axisLabelTemp.html(function() {
+    axisLabel_left.html(function() {
         return "Annual Temperature Change (&deg C)";
     });
 
