@@ -73,7 +73,10 @@ var axisLabelTemp = svgtemp.append("text")
     .attr("x", padding - 220)
     .attr("y", padding - margin.top - 20)
     .attr("class", "axis-label")
-    .attr("transform", "rotate(270)");
+    .attr("transform", "rotate(270)")
+    .html(function() {
+        return "Annual Temperature Change (&deg C)";
+    });
 
 // Initialize data
 loadData();
@@ -107,7 +110,7 @@ function updateVisualization(dataTemp){
     // Filtering out the values of 0 for filtered data since those result
     // from empty slots in our data
     var filteredDataTemp = dataTemp.filter(function(d){
-        return (data.Annual_mean != 0);
+        return (d.Annual_Mean != 0);
     });
 
     // Update the domain for the scales
@@ -119,16 +122,10 @@ function updateVisualization(dataTemp){
     }));
 
     // Append path to line groups
-    lineGroup_Annual.transition().duration(800)
+    lineGroupTemp.transition().duration(800)
         .attr("d", lineTemp(filteredDataTemp));
 
     // Call the relevant axes
     xAxisGroupTemp.transition().duration(800).call(xAxisTemp);
     yAxisGroupTemp.transition().duration(800).call(yAxisTemp);
-
-    // Append a y-axis label
-    axisLabelTemp.html(function() {
-        return "Annual Temperature Change (&deg C)";
-    });
-
 }
