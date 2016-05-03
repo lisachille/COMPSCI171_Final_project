@@ -8,7 +8,7 @@ var width = 800 - margin.left - margin.right,
     padding = 20;
 
 // Declare tool-tip
-var tip = d3.tip()
+var tipFuture = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0]);
 
@@ -107,13 +107,13 @@ function loadData() {
 function updateVisualization(data) {
 
     // Update tooltip text
-    tip.html(function(d){
+    tipFuture.html(function(d){
         return "Year: " + d.year.getFullYear() + "</br>CO2 emissions: " +
             "" + d.emissions.toFixed(2) + " million metric tonnes";
     });
 
     // Call the tool-tip
-    svgFuture.call(tip);
+    svgFuture.call(tipFuture);
 
     // Update the domain for the scales
     x.domain(d3.extent(data,function(d){
@@ -150,8 +150,8 @@ function updateVisualization(data) {
 
     // Call on events
     circle
-        .on("mouseover", tip.show)
-        .on("mouseout", tip.hide);
+        .on("mouseover", tipFuture.show)
+        .on("mouseout", tipFuture.hide);
 
     // Call the relevant axes
     xAxsGroup.transition().duration(800).call(xAxs);
